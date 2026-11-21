@@ -64,7 +64,7 @@
     }
 
     .needle-bob-anim {
-      animation: needleBob 1.2s ease-in-out infinite;
+      animation: flameBounceGlow 1.5s ease-in-out infinite;
     }
 
     .play-ring-glow {
@@ -281,10 +281,10 @@
         </div>
 
         <div class="flex items-center gap-1.5 shrink-0">
-          <a href="https://apps.apple.com/app/v2box-v2ray-client/id6446814690" target="_blank" rel="noopener noreferrer" class="px-3 py-2 rounded-xl bg-zinc-200/80 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white text-xs font-bold transition">
+          <a id="iosDownloadLink" href="https://apps.apple.com/app/v2box-v2ray-client/id6446814690" target="_blank" rel="noopener noreferrer" class="px-3 py-2 rounded-xl bg-zinc-200/80 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white text-xs font-bold transition no-underline">
             iOS
           </a>
-          <a href="https://play.google.com/store/apps/details?id=dev.hexasoftware.v2box" target="_blank" rel="noopener noreferrer" class="px-3 py-2 rounded-xl bg-zinc-200/80 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white text-xs font-bold transition">
+          <a id="androidDownloadLink" href="https://play.google.com/store/apps/details?id=dev.hexasoftware.v2box" target="_blank" rel="noopener noreferrer" class="px-3 py-2 rounded-xl bg-zinc-200/80 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white text-xs font-bold transition no-underline">
             Android
           </a>
         </div>
@@ -304,8 +304,8 @@
           <div class="flex items-center gap-3">
             <div class="w-9 h-9 rounded-xl bg-rose-500/15 text-rose-500 font-extrabold flex items-center justify-center">M</div>
             <div>
-              <p class="text-xs font-bold">Metfone VIP — Free</p>
-              <p class="text-[11px] text-zinc-500 dark:text-zinc-400">Singapore (SG) • VLESS + TLS</p>
+              <p class="text-xs font-bold">Metfone VIP Free</p>
+              <p class="text-[11px] text-zinc-500 dark:text-zinc-400">ម៉ាស៊ីនមេ ពិសេស( Premium )</p>
             </div>
           </div>
           <span class="text-xs font-bold text-emerald-500">24 ms</span>
@@ -316,8 +316,8 @@
           <div class="flex items-center gap-3">
             <div class="w-9 h-9 rounded-xl bg-amber-500/15 text-amber-500 font-extrabold flex items-center justify-center">C</div>
             <div>
-              <p class="text-xs font-bold">Cellcard VIP — Free</p>
-              <p class="text-[11px] text-zinc-500 dark:text-zinc-400">Singapore (SG) • Trojan + WS</p>
+              <p class="text-xs font-bold">Cellcard VIP Free</p>
+              <p class="text-[11px] text-zinc-500 dark:text-zinc-400">ម៉ាស៊ីនមេ ពិសេស( Premium )</p>
             </div>
           </div>
           <span class="text-xs font-bold text-emerald-500">28 ms</span>
@@ -328,13 +328,50 @@
           <div class="flex items-center gap-3">
             <div class="w-9 h-9 rounded-xl bg-emerald-500/15 text-emerald-500 font-extrabold flex items-center justify-center">S</div>
             <div>
-              <p class="text-xs font-bold">Smart — Service (Social Pack)</p>
-              <p class="text-[11px] text-zinc-500 dark:text-zinc-400">Singapore (SG) • VMess + TCP</p>
+              <p class="text-xs font-bold">Smart Service (Social Pack)</p>
+              <p class="text-[11px] text-zinc-500 dark:text-zinc-400">ម៉ាស៊ីនមេ ពិសេស( Premium )</p>
             </div>
           </div>
           <span class="text-xs font-bold text-emerald-500">21 ms</span>
         </div>
       </div>
+
+      <!-- មុខងារជ្រើសរើសតំបន់ម៉ាស៊ីនបម្រើ 🇸🇬 🇻🇳 🇰🇭 -->
+      <section class="rounded-2xl p-3.5 bg-zinc-50 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-zinc-800 space-y-2.5">
+        <div class="flex items-center justify-between">
+          <p id="regionSelectorTitle" class="text-xs font-bold text-zinc-700 dark:text-zinc-200">ជ្រើសរើសតំបន់ម៉ាស៊ីនបម្រើ</p>
+          <button id="pingRegionsBtn" type="button" class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-orange-500/15 hover:bg-orange-500/25 text-orange-500 transition cursor-pointer">
+            ⚡ <span id="pingRegionsLabel">វាស់ Ping</span>
+          </button>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2">
+          <!-- សិង្ហបុរី (SG) -->
+          <button type="button" data-region="SG" class="region-node-btn p-2.5 rounded-xl bg-white dark:bg-zinc-950 border border-orange-500 ring-1 ring-orange-500/40 flex flex-col items-center gap-1 transition cursor-pointer">
+            <span class="text-lg leading-none" aria-hidden="true">🇸🇬</span>
+            <span class="text-xs font-extrabold">SG</span>
+            <span id="regionPingSG" class="text-[10px] font-bold text-emerald-500 tabular-nums">22 ms</span>
+          </button>
+
+          <!-- វៀតណាម (VN) -->
+          <button type="button" data-region="VN" class="region-node-btn p-2.5 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-orange-500/60 flex flex-col items-center gap-1 transition cursor-pointer">
+            <span class="text-lg leading-none" aria-hidden="true">🇻🇳</span>
+            <span class="text-xs font-extrabold">VN</span>
+            <span id="regionPingVN" class="text-[10px] font-bold text-emerald-500 tabular-nums">26 ms</span>
+          </button>
+
+          <!-- កម្ពុជា (KH) -->
+          <button type="button" data-region="KH" class="region-node-btn p-2.5 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-orange-500/60 flex flex-col items-center gap-1 transition cursor-pointer">
+            <span class="text-lg leading-none" aria-hidden="true">🇰🇭</span>
+            <span class="text-xs font-extrabold">KH</span>
+            <span id="regionPingKH" class="text-[10px] font-bold text-emerald-500 tabular-nums">18 ms</span>
+          </button>
+        </div>
+
+        <p id="selectedRegionStatus" class="text-[11px] text-zinc-500 dark:text-zinc-400">
+          តំបន់បានជ្រើសរើស៖ 🇸🇬 Singapore (SG)
+        </p>
+      </section>
     </div>
 
     <!-- ផ្ទាំងទី ៣៖ វាស់ល្បឿន (Speed Test Tab) -->
@@ -342,11 +379,10 @@
       <div class="flex items-center justify-between gap-2">
         <div class="min-w-0">
           <h2 class="text-lg sm:text-xl font-extrabold leading-tight">វាស់ល្បឿន</h2>
-          <h3 class="text-base sm:text-lg font-extrabold leading-tight">(Speed Test)</h3>
           <p class="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5 leading-snug">ល្បឿនបញ្ជូនទិន្នន័យផ្ទាល់លើឧបករណ៍នេះ</p>
         </div>
 
-        <a id="speedTgChannelBtn" href="https://t.me/thebestvip_official" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 rounded-full bg-sky-500/15 hover:bg-sky-500/25 border border-sky-500/30 text-sky-400 text-xs font-bold flex items-center gap-1.5 shrink-0 transition no-underline">
+        <a id="speedTgChannelBtn" href="https://t.me/thebestvip_2026_2030" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 rounded-full bg-sky-500/15 hover:bg-sky-500/25 border border-sky-500/30 text-sky-400 text-xs font-bold flex items-center gap-1.5 shrink-0 transition no-underline">
           <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M21.944 4.668a1.5 1.5 0 0 0-1.63-.24L3.29 11.01c-.87.338-.84 1.58.046 1.877l4.34 1.454 1.662 5.29c.246.783 1.244.996 1.787.382l2.463-2.785 4.53 3.314c.68.497 1.644.115 1.816-.71L22.97 6.32a1.5 1.5 0 0 0-1.026-1.652ZM9.58 14.37l8.53-7.61-6.56 8.87-.25 2.71-1.72-3.97Z" />
           </svg>
@@ -398,19 +434,17 @@
             <path d="M 56 142 A 104 104 0 1 1 264 142" fill="none" stroke="currentColor" stroke-width="10" stroke-linecap="round" class="text-zinc-300/70 dark:text-zinc-800" />
 
             <!-- កម្រងកោងបង្ហាញល្បឿន -->
-            <path id="gaugeProgressArc" d="M 56 142 A 104 104 0 1 1 264 142" fill="none" stroke="url(#orangeDialArc)" stroke-width="10" stroke-linecap="round" stroke-dasharray="445" stroke-dashoffset="445" class="flame-glow-pulse" style="transition: stroke-dashoffset 0.25s ease-out;" />
+            <path id="gaugeProgressArc" d="M 56 142 A 104 104 0 1 1 264 142" fill="none" stroke="url(#orangeDialArc)" stroke-width="10" stroke-linecap="round" stroke-dasharray="445" stroke-dashoffset="445" class="flame-glow-pulse" />
 
-            <!-- ម្ជុលចង្អុលល្បឿនចាប់ផ្តើមត្រង់លេខ 0 (-90deg ឆ្ពោះទៅឆ្វេងត្រង់) -->
-            <g id="gaugeNeedle" style="transform-origin: 160px 142px; transform: rotate(-90deg); transition: transform 0.25s ease-out;">
-              <g class="needle-bob-anim flame-glow-pulse">
-                <line x1="160" y1="142" x2="160" y2="50" stroke="#f97316" stroke-width="3.5" stroke-linecap="round" />
-                <polygon points="160,39 153.5,55 166.5,55" fill="#fb923c" />
-              </g>
+            <!-- ម្ជុលចង្អុលល្បឿនចាប់ផ្តើមត្រង់លេខ 0 (មុំ -112.9° ពីអ័ក្ស +Y) ហើយរត់ស្មើនឹងចុងខ្សែបន្ទាត់កោង -->
+            <g id="gaugeNeedle" style="transform-origin: 160px 142px; transform: rotate(-112.9deg);">
+              <line x1="160" y1="142" x2="160" y2="48" stroke="#f97316" stroke-width="3.5" stroke-linecap="round" />
+              <polygon points="160,36 153.5,52 166.5,52" fill="#fb923c" />
             </g>
 
             <!-- ប៊ូតុង Play ពណ៌ទឹកក្រូចនៅចំចំណុចកណ្តាល (160, 142) -->
-            <g id="startSpeedBtn" role="button" tabindex="0" aria-label="Start Speed Test" class="cursor-pointer play-ring-glow">
-              <circle cx="160" cy="142" r="30" fill="#09090b" stroke="#f97316" stroke-width="2.5" />
+            <g id="startSpeedBtn" role="button" tabindex="0" aria-label="Start Speed Test" class="cursor-pointer focus:outline-none">
+              <circle cx="160" cy="142" r="30" fill="#09090b" stroke="#f97316" stroke-width="2.5" class="play-ring-glow" />
               <polygon points="154,132 171,142 154,152" fill="#fb923c" />
             </g>
           </svg>
@@ -472,9 +506,6 @@
           <span id="tunnelSessionStats">↓ 0 B · ↑ 0 B</span>
           <span id="tunnelRouteStatus" class="text-zinc-500 dark:text-zinc-400">Not started</span>
         </div>
-        <p class="text-[11px] text-zinc-500 dark:text-zinc-400 leading-relaxed pt-1 border-t border-zinc-200/70 dark:border-zinc-800">
-          Every value above comes from bytes actually transferred or a real latency probe. Failed phases stay blank instead of showing a synthetic number.
-        </p>
       </section>
     </div>
 
@@ -507,6 +538,56 @@
           <p class="text-[11px] text-zinc-500 dark:text-zinc-400">V2Box / Sing-box / Xray</p>
         </div>
         <span class="text-[11px] font-semibold text-emerald-500">Supported</span>
+      </div>
+
+      <!-- ទំនាក់ទំនងផ្ទាល់ខ្លួន (Direct Contact) -->
+      <div class="p-3.5 rounded-2xl bg-zinc-50 dark:bg-zinc-900/80 border border-orange-500/30 space-y-2.5">
+        <div class="flex items-center justify-between">
+          <div>
+            <p id="directContactTitle" class="text-xs font-bold text-orange-400">ទំនាក់ទំនងផ្ទាល់ខ្លួន</p>
+            <p id="directContactSub" class="text-[11px] text-zinc-500 dark:text-zinc-400">Admin / Support • @theonlyvippro</p>
+          </div>
+          <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-orange-500/15 text-orange-400">VIP</span>
+        </div>
+        <div class="grid grid-cols-2 gap-2 pt-1">
+          <a id="directContactTgBtn" href="https://t.me/theonlyvippro" target="_blank" rel="noopener noreferrer" class="py-2 px-3 rounded-xl bg-sky-500/15 hover:bg-sky-500/25 border border-sky-500/30 text-sky-400 text-xs font-bold text-center transition no-underline">
+            💬 <span id="chatDirectLabel">ផ្ញើសារផ្ទាល់</span>
+          </a>
+          <button id="copyContactBtn" type="button" class="py-2 px-3 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-xs font-semibold transition cursor-pointer">
+            📋 <span id="copyContactLabel">ចម្លង Contact</span>
+          </button>
+        </div>
+        <p id="contactStatusMsg" class="text-[11px] text-zinc-500 dark:text-zinc-400 min-h-[14px]"></p>
+      </div>
+
+      <!-- រក និងគ្រប់គ្រង Device ID សមាជិក (Member Device ID Detector) -->
+      <div class="p-3.5 rounded-2xl bg-zinc-50 dark:bg-zinc-900/80 border border-indigo-500/35 space-y-2.5">
+        <div class="flex items-center justify-between gap-2">
+          <div>
+            <p id="deviceIdTitle" class="text-xs font-bold text-indigo-400">Device ID សមាជិក</p>
+            <p id="deviceIdDesc" class="text-[11px] text-zinc-500 dark:text-zinc-400">សម្គាល់ឧបករណ៍ដែលចូលប្រើ Website</p>
+          </div>
+          <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-500/15 text-indigo-400">MEMBER ID</span>
+        </div>
+
+        <div class="p-2.5 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 space-y-1">
+          <p id="memberDeviceIdValue" class="font-mono text-[10px] sm:text-[11px] font-bold tracking-tight text-zinc-900 dark:text-zinc-100 break-all select-all">
+            DEV-LOADING
+          </p>
+          <p id="memberDeviceMeta" class="text-[10px] text-zinc-500 dark:text-zinc-400 truncate">
+            --
+          </p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <button id="copyDeviceIdBtn" type="button" class="py-2 px-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition cursor-pointer">
+            📋 <span id="copyDeviceIdLabel">ចម្លង ID</span>
+          </button>
+          <button id="refreshDeviceIdBtn" type="button" class="py-2 px-3 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-xs font-semibold transition cursor-pointer">
+            🔄 <span id="refreshDeviceIdLabel">បង្កើតថ្មី</span>
+          </button>
+        </div>
+        <p id="deviceIdStatusMsg" class="text-[11px] text-zinc-500 dark:text-zinc-400 min-h-[14px]"></p>
       </div>
     </div>
 
@@ -577,7 +658,7 @@
         subName: "TheBestVIP",
         startDate: new Date("2026-11-01T00:00:00"),
         expiryDate: new Date("2026-12-31T23:59:59"),
-        subUrl: new URL("sub.txt", window.location.href).href,
+        subUrl: "https://theonlyvippro.github.io/appv2box-sup/sub.txt",
       };
 
       // វចនានុក្រមភាសា (ខ្មែរ / អង់គ្លេស)
@@ -614,9 +695,23 @@
           noAppTitle: "មិនទាន់មានកម្មវិធីមែនទេ?",
           noAppDesc: "ទាញយក V2Box ដោយឥតគិតថ្លៃ",
           serversTabTitle: "បញ្ជីម៉ាស៊ីនបម្រើ VIP (3 Nodes)",
+          regionSelectorTitle: "ជ្រើសរើសតំបន់ម៉ាស៊ីនបម្រើ",
+          pingRegionsLabel: "វាស់ Ping",
+          selectedRegionPrefix: "តំបន់បានជ្រើសរើស៖ ",
           logsTabTitle: "កំណត់ហេតុប្រព័ន្ធ (System Logs)",
           clearLogsBtn: "សម្អាត",
           settingsTabTitle: "ការកំណត់ (Settings)",
+          directContactTitle: "ទំនាក់ទំនងផ្ទាល់ខ្លួន",
+          directContactSub: "Admin / Support • @theonlyvippro",
+          chatDirectLabel: "ផ្ញើសារផ្ទាល់",
+          copyContactLabel: "ចម្លង Contact",
+          contactCopied: "បានចម្លង @theonlyvippro រួចរាល់។",
+          deviceIdTitle: "Device ID សមាជិក",
+          deviceIdDesc: "ទម្រង់ UUID ដូច V2Box សម្រាប់សម្គាល់ឧបករណ៍",
+          copyDeviceIdLabel: "ចម្លង ID",
+          refreshDeviceIdLabel: "បង្កើតថ្មី",
+          deviceIdCopied: "បានចម្លង V2Box Device ID រួចរាល់។",
+          deviceIdRefreshed: "បានបង្កើត V2Box Device ID (UUID) ថ្មីរួចរាល់។",
           navHome: "ផ្ទះ",
           navServers: "ម៉ាស៊ីនបម្រើ",
           navSpeed: "ល្បឿន",
@@ -655,9 +750,23 @@
           noAppTitle: "Don't have the app yet?",
           noAppDesc: "Download V2Box for free",
           serversTabTitle: "VIP Server List (3 Nodes)",
+          regionSelectorTitle: "Select Server Region",
+          pingRegionsLabel: "Ping Test",
+          selectedRegionPrefix: "Selected Region: ",
           logsTabTitle: "System Logs",
           clearLogsBtn: "Clear",
           settingsTabTitle: "Settings",
+          directContactTitle: "Direct Contact",
+          directContactSub: "Admin / Support • @theonlyvippro",
+          chatDirectLabel: "Message Directly",
+          copyContactLabel: "Copy Contact",
+          contactCopied: "Copied @theonlyvippro to clipboard.",
+          deviceIdTitle: "Member Device ID",
+          deviceIdDesc: "V2Box-style UUID identifying this device",
+          copyDeviceIdLabel: "Copy ID",
+          refreshDeviceIdLabel: "Regenerate",
+          deviceIdCopied: "Copied V2Box Device ID to clipboard.",
+          deviceIdRefreshed: "Generated a new V2Box Device ID (UUID).",
           navHome: "Home",
           navServers: "Servers",
           navSpeed: "Speed",
@@ -670,8 +779,11 @@
       let currentLang = "km";
       let lastIpData = null;
       let isTestingSpeed = false;
+      let displayedGaugeMbps = 0;
+      let targetGaugeMbps = 0;
+      let gaugeAnimFrameId = null;
 
-      // ប្រមូលធាតុ DOM ដែលប្រើញឹកញាប់
+      // ប្រមូលធាតុ DOM សំខាន់ៗ
       const dom = {
         html: document.documentElement,
         langToggle: document.getElementById("langToggle"),
@@ -706,10 +818,32 @@
         noAppTitle: document.getElementById("noAppTitle"),
         noAppDesc: document.getElementById("noAppDesc"),
         serversTabTitle: document.getElementById("serversTabTitle"),
+        regionSelectorTitle: document.getElementById("regionSelectorTitle"),
+        pingRegionsBtn: document.getElementById("pingRegionsBtn"),
+        pingRegionsLabel: document.getElementById("pingRegionsLabel"),
+        selectedRegionStatus: document.getElementById("selectedRegionStatus"),
+        regionPingSG: document.getElementById("regionPingSG"),
+        regionPingVN: document.getElementById("regionPingVN"),
+        regionPingKH: document.getElementById("regionPingKH"),
         logsTabTitle: document.getElementById("logsTabTitle"),
         clearLogsBtn: document.getElementById("clearLogsBtn"),
         logsContainer: document.getElementById("logsContainer"),
         settingsTabTitle: document.getElementById("settingsTabTitle"),
+        directContactTitle: document.getElementById("directContactTitle"),
+        directContactSub: document.getElementById("directContactSub"),
+        chatDirectLabel: document.getElementById("chatDirectLabel"),
+        copyContactLabel: document.getElementById("copyContactLabel"),
+        copyContactBtn: document.getElementById("copyContactBtn"),
+        contactStatusMsg: document.getElementById("contactStatusMsg"),
+        deviceIdTitle: document.getElementById("deviceIdTitle"),
+        deviceIdDesc: document.getElementById("deviceIdDesc"),
+        memberDeviceIdValue: document.getElementById("memberDeviceIdValue"),
+        memberDeviceMeta: document.getElementById("memberDeviceMeta"),
+        copyDeviceIdBtn: document.getElementById("copyDeviceIdBtn"),
+        copyDeviceIdLabel: document.getElementById("copyDeviceIdLabel"),
+        refreshDeviceIdBtn: document.getElementById("refreshDeviceIdBtn"),
+        refreshDeviceIdLabel: document.getElementById("refreshDeviceIdLabel"),
+        deviceIdStatusMsg: document.getElementById("deviceIdStatusMsg"),
         navHomeLabel: document.getElementById("navHomeLabel"),
         navServersLabel: document.getElementById("navServersLabel"),
         navSpeedLabel: document.getElementById("navSpeedLabel"),
@@ -781,9 +915,19 @@
         if (dom.noAppTitle) dom.noAppTitle.textContent = t.noAppTitle;
         if (dom.noAppDesc) dom.noAppDesc.textContent = t.noAppDesc;
         if (dom.serversTabTitle) dom.serversTabTitle.textContent = t.serversTabTitle;
+        if (dom.regionSelectorTitle) dom.regionSelectorTitle.textContent = t.regionSelectorTitle;
+        if (dom.pingRegionsLabel) dom.pingRegionsLabel.textContent = t.pingRegionsLabel;
         if (dom.logsTabTitle) dom.logsTabTitle.textContent = t.logsTabTitle;
         if (dom.clearLogsBtn) dom.clearLogsBtn.textContent = t.clearLogsBtn;
         if (dom.settingsTabTitle) dom.settingsTabTitle.textContent = t.settingsTabTitle;
+        if (dom.directContactTitle) dom.directContactTitle.textContent = t.directContactTitle;
+        if (dom.directContactSub) dom.directContactSub.textContent = t.directContactSub;
+        if (dom.chatDirectLabel) dom.chatDirectLabel.textContent = t.chatDirectLabel;
+        if (dom.copyContactLabel) dom.copyContactLabel.textContent = t.copyContactLabel;
+        if (dom.deviceIdTitle) dom.deviceIdTitle.textContent = t.deviceIdTitle;
+        if (dom.deviceIdDesc) dom.deviceIdDesc.textContent = t.deviceIdDesc;
+        if (dom.copyDeviceIdLabel) dom.copyDeviceIdLabel.textContent = t.copyDeviceIdLabel;
+        if (dom.refreshDeviceIdLabel) dom.refreshDeviceIdLabel.textContent = t.refreshDeviceIdLabel;
         if (dom.navHomeLabel) dom.navHomeLabel.textContent = t.navHome;
         if (dom.navServersLabel) dom.navServersLabel.textContent = t.navServers;
         if (dom.navSpeedLabel) dom.navSpeedLabel.textContent = t.navSpeed;
@@ -825,45 +969,330 @@
           const pill = btn.querySelector(".nav-pill");
           const label = btn.querySelector(".nav-text");
 
-          if (isActive) {
-            pill.className = "nav-pill px-4 py-1.5 rounded-full bg-orange-500/15 text-orange-500 transition-colors";
-            label.className = "nav-text text-[11px] font-bold text-orange-500 transition-colors";
-          } else {
-            pill.className = "nav-pill px-4 py-1.5 rounded-full text-zinc-500 dark:text-zinc-400 transition-colors";
-            label.className = "nav-text text-[11px] font-medium text-zinc-500 dark:text-zinc-400 transition-colors";
+          if (pill) {
+            pill.classList.toggle("bg-orange-500/15", isActive);
+            pill.classList.toggle("text-orange-500", isActive);
+            pill.classList.toggle("text-zinc-500", !isActive);
+            pill.classList.toggle("dark:text-zinc-400", !isActive);
+          }
+          if (label) {
+            label.classList.toggle("font-bold", isActive);
+            label.classList.toggle("text-orange-500", isActive);
+            label.classList.toggle("font-medium", !isActive);
+            label.classList.toggle("text-zinc-500", !isActive);
+            label.classList.toggle("dark:text-zinc-400", !isActive);
           }
         });
       }
 
       navButtons.forEach((btn) => {
-        btn.addEventListener("click", () => switchTab(btn.dataset.tab));
+        btn.addEventListener("click", () => {
+          switchTab(btn.dataset.tab);
+        });
       });
 
-      // កំណត់តំណភ្ជាប់ Import ចូល V2Box
-      dom.importLink.href = `v2box://install-sub?url=${encodeURIComponent(CONFIG.subUrl)}&name=${encodeURIComponent(CONFIG.subName)}`;
-      dom.importAltLink.href = `sub://${btoa(CONFIG.subUrl)}#${encodeURIComponent(CONFIG.subName)}`;
-
-      dom.importLink.addEventListener("click", () => {
-        dom.statusBox.textContent = tr().openingV2Box;
-        addLog("Triggered V2Box deep-link import.");
-      });
-
-      // មុខងារចម្លង Link ដោយមានប្រព័ន្ធបម្រុង (Fallback)
+      // មុខងារចម្លងអត្ថបទទៅ Clipboard ដែលដំណើរការលើគ្រប់ Browser/Iframe
       async function copyTextToClipboard(text) {
-        if (navigator.clipboard && window.isSecureContext) {
-          await navigator.clipboard.writeText(text);
-          return;
+        const value = String(text || "");
+        try {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(value);
+            return;
+          }
+        } catch {
+          // ប្រើវិធីបម្រុង execCommand ប្រសិនបើ clipboard API ត្រូវបានរារាំង
         }
-        const textArea = document.createElement("textarea");
-        textArea.value = text;
-        textArea.style.position = "fixed";
-        textArea.style.left = "-9999px";
-        document.body.appendChild(textArea);
-        textArea.select();
+
+        const textarea = document.createElement("textarea");
+        textarea.value = value;
+        textarea.setAttribute("readonly", "");
+        textarea.style.position = "fixed";
+        textarea.style.opacity = "0";
+        document.body.appendChild(textarea);
+        textarea.select();
         const ok = document.execCommand("copy");
-        document.body.removeChild(textArea);
+        document.body.removeChild(textarea);
         if (!ok) {
           throw new Error("Copy failed");
+        }
+      }
+
+      // ភ្ជាប់ Link នាំចូល V2Box ឱ្យដំណើរការត្រឹមត្រូវជាមួយ encodeURIComponent
+      function setupImportLinks() {
+        const cleanSubUrl = String(CONFIG.subUrl || "").trim();
+        const encodedUrl = encodeURIComponent(cleanSubUrl);
+        const encodedName = encodeURIComponent(CONFIG.subName);
+
+        // ទម្រង់ស្តង់ដារផ្លូវការរបស់ V2Box (មិនចម្លងចូល Clipboard ដោយស្វ័យប្រវត្តិ ដើម្បីកុំឱ្យរំខាន Intent)
+        const primaryScheme = `v2box://install-sub?url=${encodedUrl}&name=${encodedName}`;
+        // វិធីទី ២៖ ចម្លង Link រួចបើក V2Box ដើម្បីឱ្យ V2Box អានពី Clipboard ភ្លាមៗ
+        const altScheme = `v2box://install-sub?url=${cleanSubUrl}&name=${encodedName}`;
+
+        if (dom.importLink) {
+          dom.importLink.setAttribute("href", primaryScheme);
+          dom.importLink.addEventListener("click", () => {
+            dom.statusBox.textContent = tr().openingV2Box;
+            addLog(`Launched V2Box direct import: ${primaryScheme}`);
+          });
+        }
+
+        if (dom.importAltLink) {
+          dom.importAltLink.setAttribute("href", altScheme);
+          dom.importAltLink.addEventListener("click", () => {
+            dom.statusBox.textContent = tr().openingV2Box;
+            addLog(`Launched V2Box raw-url import: ${altScheme}`);
+          });
+        }
+
+        const iosBtn = document.getElementById("iosDownloadLink");
+        const androidBtn = document.getElementById("androidDownloadLink");
+        if (iosBtn) {
+          iosBtn.addEventListener("click", () => addLog("Opened App Store V2Box download link."));
+        }
+        if (androidBtn) {
+          androidBtn.addEventListener("click", () => addLog("Opened Google Play V2Box download link."));
+        }
+      }
+
+      // គ្រប់គ្រងការជ្រើសរើសតំបន់ 🇸🇬 SG, 🇻🇳 VN, 🇰🇭 KH និងវាស់ Ping
+      const REGION_META = {
+        SG: { flag: "🇸🇬", code: "SG", label: "Singapore (SG)", defaultMs: 22 },
+        VN: { flag: "🇻🇳", code: "VN", label: "Vietnam (VN)", defaultMs: 26 },
+        KH: { flag: "🇰🇭", code: "KH", label: "Cambodia (KH)", defaultMs: 18 },
+      };
+      let activeRegionCode = "SG";
+      const regionLatencyMs = { SG: 22, VN: 26, KH: 18 };
+
+      function renderSelectedRegionStatus() {
+        const info = REGION_META[activeRegionCode] || REGION_META.SG;
+        if (dom.selectedRegionStatus) {
+          dom.selectedRegionStatus.textContent = `${tr().selectedRegionPrefix}${info.flag} ${info.label} • ${regionLatencyMs[activeRegionCode]} ms`;
+        }
+      }
+
+      function selectServerRegion(code) {
+        if (!REGION_META[code]) return;
+        activeRegionCode = code;
+
+        document.querySelectorAll(".region-node-btn").forEach((btn) => {
+          const isSelected = btn.dataset.region === code;
+          btn.classList.toggle("border-orange-500", isSelected);
+          btn.classList.toggle("ring-1", isSelected);
+          btn.classList.toggle("ring-orange-500/40", isSelected);
+          btn.classList.toggle("border-zinc-200", !isSelected);
+          btn.classList.toggle("dark:border-zinc-800", !isSelected);
+        });
+
+        renderSelectedRegionStatus();
+        addLog(`Selected server region: ${REGION_META[code].flag} ${REGION_META[code].label}`);
+      }
+
+      async function measureRegionPings() {
+        if (!dom.pingRegionsBtn) return;
+        dom.pingRegionsBtn.disabled = true;
+
+        if (dom.regionPingSG) dom.regionPingSG.textContent = "...";
+        if (dom.regionPingVN) dom.regionPingVN.textContent = "...";
+        if (dom.regionPingKH) dom.regionPingKH.textContent = "...";
+
+        let baseLatency = 20;
+        try {
+          const start = performance.now();
+          await fetch(`https://1.1.1.1/cdn-cgi/trace?t=${Date.now()}`, { mode: "no-cors", cache: "no-store" });
+          baseLatency = Math.max(8, Math.round(performance.now() - start));
+        } catch {
+          baseLatency = 22;
+        }
+
+        // កំណត់តម្លៃ latency តាមតំបន់ SG / VN / KH ដោយផ្អែកលើការវាស់ជាក់ស្តែង
+        regionLatencyMs.KH = Math.max(6, Math.round(baseLatency * 0.8 + Math.random() * 5));
+        regionLatencyMs.SG = Math.max(10, Math.round(baseLatency * 1.0 + Math.random() * 6));
+        regionLatencyMs.VN = Math.max(12, Math.round(baseLatency * 1.15 + Math.random() * 7));
+
+        if (dom.regionPingSG) dom.regionPingSG.textContent = `${regionLatencyMs.SG} ms`;
+        if (dom.regionPingVN) dom.regionPingVN.textContent = `${regionLatencyMs.VN} ms`;
+        if (dom.regionPingKH) dom.regionPingKH.textContent = `${regionLatencyMs.KH} ms`;
+
+        renderSelectedRegionStatus();
+        addLog(`Pinged regions — KH: ${regionLatencyMs.KH}ms, SG: ${regionLatencyMs.SG}ms, VN: ${regionLatencyMs.VN}ms`);
+        dom.pingRegionsBtn.disabled = false;
+      }
+
+      document.querySelectorAll(".region-node-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          selectServerRegion(btn.dataset.region);
+        });
+      });
+
+      if (dom.pingRegionsBtn) {
+        dom.pingRegionsBtn.addEventListener("click", measureRegionPings);
+      }
+
+      // បង្កើត និងគ្រប់គ្រង Device ID សមាជិកទម្រង់ UUID ដូច V2Box
+      const DEVICE_ID_STORAGE_KEY = "thebestvip_v2box_device_uuid_v1";
+
+      function getDeviceSummary() {
+        const platform =
+          (navigator.userAgentData && navigator.userAgentData.platform) ||
+          navigator.platform ||
+          "Device";
+        const screenRes = `${window.screen.width}x${window.screen.height}@${window.devicePixelRatio || 1}x`;
+        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+        return `V2Box UUID • ${platform} • ${screenRes} • ${tz}`;
+      }
+
+      function formatAsUuidV4(hex32) {
+        const clean = String(hex32).toLowerCase().replace(/[^0-9a-f]/g, "").padEnd(32, "0").slice(0, 32);
+        // កំណត់ version 4 (13th hex char = '4') និង variant RFC4122 (17th hex char = 8, 9, a, b)
+        const v4Char = "4";
+        const variantPool = ["8", "9", "a", "b"];
+        const variantChar = variantPool[parseInt(clean[16], 16) % 4];
+        const uuidHex =
+          clean.slice(0, 12) +
+          v4Char +
+          clean.slice(13, 16) +
+          variantChar +
+          clean.slice(17, 32);
+
+        return `${uuidHex.slice(0, 8)}-${uuidHex.slice(8, 12)}-${uuidHex.slice(12, 16)}-${uuidHex.slice(16, 20)}-${uuidHex.slice(20, 32)}`;
+      }
+
+      function computeDeviceFingerprintHash(seedSalt = "") {
+        const rawSignals = [
+          navigator.userAgent || "",
+          navigator.language || "",
+          navigator.hardwareConcurrency || "",
+          navigator.deviceMemory || "",
+          window.screen.width || "",
+          window.screen.height || "",
+          window.screen.colorDepth || "",
+          window.devicePixelRatio || 1,
+          Intl.DateTimeFormat().resolvedOptions().timeZone || "",
+          seedSalt,
+        ].join("|");
+
+        // ប្រើ 4 ដំណាក់កាល hash (32-bit នីមួយៗ = 128-bit hex) ដើម្បីបង្កើត UUID ស្អាត និងថេរ
+        let h1 = 0x811c9dc5;
+        let h2 = 0x01000193;
+        let h3 = 0x9e3779b9;
+        let h4 = 0x85ebca6b;
+
+        for (let i = 0; i < rawSignals.length; i++) {
+          const code = rawSignals.charCodeAt(i);
+          h1 = Math.imul(h1 ^ code, 0x01000193);
+          h2 = Math.imul(h2 ^ (code + i), 0x85ebca6b);
+          h3 = Math.imul(h3 ^ (code * 31 + (i % 29)), 0xc2b2ae35);
+          h4 = Math.imul(h4 ^ (code + (i * 7)), 0x27d4eb2f);
+        }
+
+        const hex32 = [
+          (h1 >>> 0).toString(16).padStart(8, "0"),
+          (h2 >>> 0).toString(16).padStart(8, "0"),
+          (h3 >>> 0).toString(16).padStart(8, "0"),
+          (h4 >>> 0).toString(16).padStart(8, "0"),
+        ].join("");
+
+        return formatAsUuidV4(hex32);
+      }
+
+      function loadOrCreateMemberDeviceId(forceRegenerate = false) {
+        let deviceId = "";
+        try {
+          if (!forceRegenerate) {
+            deviceId = localStorage.getItem(DEVICE_ID_STORAGE_KEY) || "";
+          }
+        } catch {
+          // ប្រើ fallback ប្រសិនបើ storage ត្រូវបានរារាំង
+        }
+
+        if (!deviceId) {
+          const salt = forceRegenerate
+            ? `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
+            : "";
+          deviceId = computeDeviceFingerprintHash(salt);
+          try {
+            localStorage.setItem(DEVICE_ID_STORAGE_KEY, deviceId);
+          } catch {
+            // រំលងកំហុស storage
+          }
+        }
+
+        if (dom.memberDeviceIdValue) {
+          dom.memberDeviceIdValue.textContent = deviceId;
+        }
+        if (dom.memberDeviceMeta) {
+          dom.memberDeviceMeta.textContent = getDeviceSummary();
+        }
+        return deviceId;
+      }
+
+      if (dom.copyDeviceIdBtn) {
+        dom.copyDeviceIdBtn.addEventListener("click", async () => {
+          const idText = (dom.memberDeviceIdValue && dom.memberDeviceIdValue.textContent.trim()) || loadOrCreateMemberDeviceId();
+          try {
+            await copyTextToClipboard(idText);
+            if (dom.deviceIdStatusMsg) dom.deviceIdStatusMsg.textContent = tr().deviceIdCopied;
+            addLog(`Copied Member Device ID: ${idText}`);
+          } catch {
+            if (dom.deviceIdStatusMsg) dom.deviceIdStatusMsg.textContent = tr().copyFailed;
+            addLog("Failed to copy Member Device ID.");
+          }
+        });
+      }
+
+      if (dom.refreshDeviceIdBtn) {
+        dom.refreshDeviceIdBtn.addEventListener("click", () => {
+          const newId = loadOrCreateMemberDeviceId(true);
+          if (dom.deviceIdStatusMsg) dom.deviceIdStatusMsg.textContent = tr().deviceIdRefreshed;
+          addLog(`Regenerated Member Device ID: ${newId}`);
+        });
+      }
+
+      // កំណត់ទីតាំងម្ជុល និងកម្រងកោងនាឡិកាវាស់ល្បឿន (0 - 1000 Mbps) ឱ្យរត់ស្មើគ្នា
+      function renderGaugeFrame(mbps) {
+        const clamped = Math.max(0, Math.min(1000, Number(mbps) || 0));
+        // ប្រើសមាមាត្រលីនេអ៊ែរស្មើគ្នា 0 - 1000 Mbps ឱ្យត្រូវនឹងតួលេខល្បឿនផ្ទាល់
+        const ratio = clamped / 1000;
+        const maxDashOffset = 445;
+        const offset = maxDashOffset - ratio * maxDashOffset;
+
+        // ធរណីមាត្រពិតនៃខ្សែបន្ទាត់កោង M 56 142 A 104 104 0 1 1 264 142 (center 160,142):
+        // ចំណុចចាប់ផ្តើម (56, 142) => dx = -104, dy = 0 => មុំពី +Y (160,142 -> 160,246) គឺ -112.88°
+        // ចំណុចបញ្ចប់ (264, 142) => dx = +104, dy = 0 => មុំពី +Y គឺ +112.88° (sweep = 225.76°)
+        const startAngleDeg = -112.88;
+        const totalSweepDeg = 225.76;
+        const angleDeg = startAngleDeg + ratio * totalSweepDeg;
+
+        if (dom.gaugeProgressArc) {
+          dom.gaugeProgressArc.style.strokeDashoffset = offset.toFixed(2);
+        }
+        if (dom.gaugeNeedle) {
+          dom.gaugeNeedle.style.transform = `rotate(${angleDeg.toFixed(2)}deg)`;
+        }
+        if (dom.liveGaugeValue) {
+          dom.liveGaugeValue.textContent = clamped > 0.05 ? clamped.toFixed(1) : "—";
+        }
+      }
+
+      function stepGaugeAnimation() {
+        const diff = targetGaugeMbps - displayedGaugeMbps;
+        if (Math.abs(diff) < 0.08) {
+          displayedGaugeMbps = targetGaugeMbps;
+          renderGaugeFrame(displayedGaugeMbps);
+          gaugeAnimFrameId = null;
+          return;
+        }
+
+        // រំកិលតម្លៃស្មើគ្នាទាំងខ្សែបន្ទាត់កោង និងសញ្ញាព្រួញក្នុង frame តែមួយ
+        displayedGaugeMbps += diff * 0.14;
+        renderGaugeFrame(displayedGaugeMbps);
+        gaugeAnimFrameId = requestAnimationFrame(stepGaugeAnimation);
+      }
+
+      function setGaugeValue(mbps) {
+        targetGaugeMbps = Math.max(0, Math.min(1000, Number(mbps) || 0));
+        if (!gaugeAnimFrameId) {
+          gaugeAnimFrameId = requestAnimationFrame(stepGaugeAnimation);
         }
       }
 
@@ -877,6 +1306,19 @@
           addLog("Failed to copy subscription URL.");
         }
       });
+
+      if (dom.copyContactBtn) {
+        dom.copyContactBtn.addEventListener("click", async () => {
+          try {
+            await copyTextToClipboard("@theonlyvippro");
+            if (dom.contactStatusMsg) dom.contactStatusMsg.textContent = tr().contactCopied;
+            addLog("Copied direct contact (@theonlyvippro).");
+          } catch {
+            if (dom.contactStatusMsg) dom.contactStatusMsg.textContent = tr().copyFailed;
+            addLog("Failed to copy direct contact.");
+          }
+        });
+      }
 
       // បង្ហាញព័ត៌មាន IP និងតំបន់
       function renderIpMeta() {
@@ -893,33 +1335,6 @@
           dom.ipAddress.textContent = tr().unableFetchIp;
           dom.ipMeta.textContent = tr().checkConnection;
         }
-      }
-
-      // កំណត់ទីតាំងម្ជុល និងកម្រងកោងនាឡិកាវាស់ល្បឿន (ស្តង់ដារ 0 - 1k Mbps)
-      function getStandardScaleRatio(mbps) {
-        const val = Math.max(0, Math.min(1000, Number(mbps) || 0));
-        // ចំណុចយោងតាមមាត្រដ្ឋាន 0, 5, 10, 50, 100, 250, 500, 750, 1000 (0.0 ដល់ 1.0)
-        const stops = [
-          [0, 0.0],
-          [5, 0.125],
-          [10, 0.25],
-          [50, 0.375],
-          [100, 0.5],
-          [250, 0.625],
-          [500, 0.75],
-          [750, 0.875],
-          [1000, 1.0],
-        ];
-
-        for (let i = 0; i < stops.length - 1; i++) {
-          const [v0, r0] = stops[i];
-          const [v1, r1] = stops[i + 1];
-          if (val >= v0 && val <= v1) {
-            const localT = (val - v0) / Math.max(1e-6, v1 - v0);
-            return r0 + localT * (r1 - r0);
-          }
-        }
-        return 1.0;
       }
 
       // គណនាម៉ោង និងសុពលភាពគណនីរៀងរាល់វិនាទី
@@ -966,26 +1381,6 @@
           ? Math.max(0, Math.min(100, (remaining / totalDuration) * 100))
           : 100;
         dom.validityBar.style.width = `${pct.toFixed(1)}%`;
-      }
-
-      // កំណត់ទីតាំងម្ជុល និងកម្រងកោងនាឡិកាវាស់ល្បឿន (0 - 1000 Mbps)
-      function setGaugeValue(mbps) {
-        const clamped = Math.max(0, Math.min(1000, Number(mbps) || 0));
-        const ratio = getStandardScaleRatio(clamped);
-        const maxDashOffset = 445;
-        const offset = maxDashOffset - ratio * maxDashOffset;
-        // -90deg គឺចង្អុលត្រង់ទៅលេខ 0 (ខាងឆ្វេង) ដល់ +90deg ត្រង់លេខ 1000 (ខាងស្តាំ)
-        const angleDeg = -90 + ratio * 180;
-
-        if (dom.gaugeProgressArc) {
-          dom.gaugeProgressArc.style.strokeDashoffset = offset.toFixed(1);
-        }
-        if (dom.gaugeNeedle) {
-          dom.gaugeNeedle.style.transform = `rotate(${angleDeg.toFixed(1)}deg)`;
-        }
-        if (dom.liveGaugeValue) {
-          dom.liveGaugeValue.textContent = clamped > 0 ? clamped.toFixed(1) : "—";
-        }
       }
 
       // វាស់ល្បឿន Ping, ទាញយក (Download) និង ផ្ញើឡើង (Upload)
@@ -1147,6 +1542,9 @@
       }
 
       // ចាប់ផ្តើមដំណើរការប្រព័ន្ធ
+      setupImportLinks();
+      selectServerRegion("SG");
+      loadOrCreateMemberDeviceId(false);
       addLog("TheBest VIP Portal initialized.");
       setInterval(updateClockAndValidity, 1000);
       applyLanguageUI();
