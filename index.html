@@ -1017,14 +1017,16 @@
         }
       }
 
-      // ភ្ជាប់ Link នាំចូល V2Box ឱ្យដំណើរការត្រឹមត្រូវ (មិន encode URL ដើម្បីកុំឱ្យ V2Box Error)
+      // ភ្ជាប់ Link នាំចូល V2Box ឱ្យដំណើរការត្រឹមត្រូវជាមួយ encodeURIComponent
       function setupImportLinks() {
         const cleanSubUrl = String(CONFIG.subUrl || "").trim();
+        const encodedUrl = encodeURIComponent(cleanSubUrl);
         const encodedName = encodeURIComponent(CONFIG.subName);
 
-        // V2Box ត្រូវការ raw URL ត្រង់នៅក្នុង parameter url= ដើម្បីទាញយក sub.txt បានជោគជ័យ
-        const primaryScheme = `v2box://install-sub?url=${cleanSubUrl}&name=${encodedName}`;
-        const altScheme = `v2box://sub?url=${cleanSubUrl}#${encodedName}`;
+        // ទម្រង់ស្តង់ដារផ្លូវការរបស់ V2Box
+        const primaryScheme = `v2box://install-sub?url=${encodedUrl}&name=${encodedName}`;
+        // ទម្រង់ទី ២ បម្រុង (Base64 / Sub URI)
+        const altScheme = `v2box://sub?url=${encodedUrl}&name=${encodedName}`;
 
         if (dom.importLink) {
           dom.importLink.setAttribute("href", primaryScheme);
