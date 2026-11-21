@@ -37,6 +37,44 @@
       animation: flowingGradient 4.5s ease-in-out infinite;
       box-shadow: 0 0 12px rgba(139, 92, 246, 0.45);
     }
+
+    /* ចលនាពណ៌ភ្លើងលោតចុះឡើងលើម្ជុលព្រួញ និងនាឡិកាវាស់ល្បឿន */
+    @keyframes flameBounceGlow {
+      0%, 100% {
+        filter: drop-shadow(0 0 4px rgba(249, 115, 22, 0.45)) drop-shadow(0 0 8px rgba(251, 146, 60, 0.25));
+        opacity: 0.88;
+      }
+      50% {
+        filter: drop-shadow(0 0 12px rgba(249, 115, 22, 1)) drop-shadow(0 0 22px rgba(250, 204, 21, 0.7));
+        opacity: 1;
+      }
+    }
+
+    @keyframes needleBob {
+      0%, 100% {
+        transform: translate(0px, 0px);
+      }
+      50% {
+        transform: translate(2px, -3px);
+      }
+    }
+
+    .flame-glow-pulse {
+      animation: flameBounceGlow 1.5s ease-in-out infinite;
+    }
+
+    .needle-bob-anim {
+      animation: needleBob 1.2s ease-in-out infinite;
+    }
+
+    .play-ring-glow {
+      animation: flameBounceGlow 2s ease-in-out infinite;
+    }
+
+    /* រចនាបថកម្រងពណ៌ខៀវភ្លឺដូចរូបភាពគំរូ */
+    .cyan-arc-glow {
+      filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.55)) drop-shadow(0 0 16px rgba(14, 165, 233, 0.35));
+    }
   </style>
 </head>
 <body class="bg-zinc-100 dark:bg-black text-zinc-900 dark:text-zinc-100 bg-grid-pattern min-h-screen flex items-center justify-center p-4 pb-28">
@@ -118,8 +156,8 @@
       <div class="flex items-center gap-2">
         <button id="langToggle" type="button" aria-label="Toggle Language" class="px-3 py-2 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-200 dark:hover:bg-zinc-800 text-xs font-bold transition cursor-pointer">
           <span id="langLabel">EN</span>
-      <!-- ប៊ូតុងប្តូរផ្ទៃពណ៌ (លុបប៊ូតុងប្តូរភាសាចេញ) -->
-      <div class="flex items-center gap-2">
+        </button>
+
         <button id="themeToggle" type="button" aria-label="Toggle Theme" class="px-3 py-2 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-200 dark:hover:bg-zinc-800 text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer">
           <span id="themeIcon">☀️</span>
           <span id="themeLabel">ស</span>
@@ -316,7 +354,7 @@
         </a>
       </div>
 
-      <!-- កាតនាឡិកាវាស់ល្បឿនរាងកោង (0 - 400 Mbps) -->
+      <!-- កាតនាឡិកាវាស់ល្បឿនរាងកោង (0 - 1000 Mbps) -->
       <section class="rounded-3xl p-4 sm:p-5 bg-zinc-50 dark:bg-zinc-900/75 border border-zinc-200/80 dark:border-zinc-800 space-y-3">
         <div class="flex items-center justify-between text-[11px] font-semibold text-zinc-500 dark:text-zinc-400">
           <span class="px-3 py-1 rounded-full bg-zinc-200/80 dark:bg-zinc-800/90 flex items-center gap-1.5">
@@ -360,20 +398,22 @@
             <path d="M 56 142 A 104 104 0 1 1 264 142" fill="none" stroke="currentColor" stroke-width="10" stroke-linecap="round" class="text-zinc-300/70 dark:text-zinc-800" />
 
             <!-- កម្រងកោងបង្ហាញល្បឿន -->
-            <path id="gaugeProgressArc" d="M 56 142 A 104 104 0 1 1 264 142" fill="none" stroke="url(#orangeDialArc)" stroke-width="10" stroke-linecap="round" stroke-dasharray="445" stroke-dashoffset="445" style="transition: stroke-dashoffset 0.25s ease-out;" />
+            <path id="gaugeProgressArc" d="M 56 142 A 104 104 0 1 1 264 142" fill="none" stroke="url(#orangeDialArc)" stroke-width="10" stroke-linecap="round" stroke-dasharray="445" stroke-dashoffset="445" class="flame-glow-pulse" style="transition: stroke-dashoffset 0.25s ease-out;" />
 
-            <!-- ម្ជុលចង្អុលល្បឿន -->
-            <g id="gaugeNeedle" style="transform-origin: 160px 142px; transform: rotate(-125deg); transition: transform 0.25s ease-out;">
-              <line x1="160" y1="142" x2="160" y2="54" stroke="#f97316" stroke-width="3" stroke-linecap="round" />
+            <!-- ម្ជុលចង្អុលល្បឿនចាប់ផ្តើមត្រង់លេខ 0 (-90deg ឆ្ពោះទៅឆ្វេងត្រង់) -->
+            <g id="gaugeNeedle" style="transform-origin: 160px 142px; transform: rotate(-90deg); transition: transform 0.25s ease-out;">
+              <g class="needle-bob-anim flame-glow-pulse">
+                <line x1="160" y1="142" x2="160" y2="50" stroke="#f97316" stroke-width="3.5" stroke-linecap="round" />
+                <polygon points="160,39 153.5,55 166.5,55" fill="#fb923c" />
+              </g>
+            </g>
+
+            <!-- ប៊ូតុង Play ពណ៌ទឹកក្រូចនៅចំចំណុចកណ្តាល (160, 142) -->
+            <g id="startSpeedBtn" role="button" tabindex="0" aria-label="Start Speed Test" class="cursor-pointer play-ring-glow">
+              <circle cx="160" cy="142" r="30" fill="#09090b" stroke="#f97316" stroke-width="2.5" />
+              <polygon points="154,132 171,142 154,152" fill="#fb923c" />
             </g>
           </svg>
-
-          <!-- ប៊ូតុង Play ពណ៌ទឹកក្រូចនៅចំកណ្តាល -->
-          <button id="startSpeedBtn" type="button" aria-label="Start Speed Test" class="-mt-12 z-10 w-16 h-16 rounded-full bg-zinc-950 border-2 border-orange-500 shadow-[0_0_24px_rgba(249,115,22,0.45)] hover:scale-105 active:scale-95 flex items-center justify-center text-orange-400 transition cursor-pointer">
-            <svg id="speedPlayIcon" class="w-6 h-6 translate-x-0.5" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M8 5.25v13.5a.75.75 0 0 0 1.14.64l10.5-6.75a.75.75 0 0 0 0-1.28L9.14 4.61A.75.75 0 0 0 8 5.25Z" />
-            </svg>
-          </button>
 
           <div class="mt-2 text-center">
             <p id="liveGaugeValue" class="text-2xl font-extrabold tracking-tight tabular-nums">—</p>
@@ -383,34 +423,58 @@
         </div>
       </section>
 
-      <!-- កាតលទ្ធផល ៣៖ ទាញយក / ផ្ញើឡើង / Ping -->
+      <!-- កាតបង្ហាញលទ្ធផល ទាញយក (Download) / ផ្ញើឡើង (Upload) / Ping -->
       <section class="grid grid-cols-3 gap-2.5">
-        <div class="rounded-2xl p-3 bg-zinc-50 dark:bg-zinc-900/75 border border-zinc-200/80 dark:border-zinc-800 space-y-2">
-          <div class="flex items-center gap-1.5">
-            <span class="w-5 h-5 rounded-full bg-orange-500/15 text-orange-400 flex items-center justify-center text-xs font-bold">↓</span>
-            <span class="text-xs font-bold">ទាញយក</span>
+        <div class="rounded-2xl p-3 bg-zinc-50 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-zinc-800 space-y-1">
+          <div class="flex items-center gap-1 text-[11px] font-bold text-orange-400">
+            <span>↓</span>
+            <span>ទាញយក</span>
           </div>
-          <p class="text-sm font-extrabold tabular-nums"><span id="dlSpeedResult">—</span> <span class="text-[11px] font-normal text-zinc-400">Mbps</span></p>
-          <div class="h-0.5 w-full bg-orange-500/40 rounded-full"></div>
+          <p class="text-sm font-extrabold tabular-nums"><span id="dlSpeedResult">—</span></p>
+          <p class="text-[10px] text-zinc-400">Mbps</p>
+          <div class="h-1 w-full rounded-full bg-orange-500/30 overflow-hidden">
+            <div class="h-full w-2/3 bg-orange-500 rounded-full"></div>
+          </div>
         </div>
 
-        <div class="rounded-2xl p-3 bg-zinc-50 dark:bg-zinc-900/75 border border-zinc-200/80 dark:border-zinc-800 space-y-2">
-          <div class="flex items-center gap-1.5">
-            <span class="w-5 h-5 rounded-full bg-emerald-500/15 text-emerald-400 flex items-center justify-center text-xs font-bold">↑</span>
-            <span class="text-xs font-bold">ផ្ញើឡើង</span>
+        <div class="rounded-2xl p-3 bg-zinc-50 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-zinc-800 space-y-1">
+          <div class="flex items-center gap-1 text-[11px] font-bold text-emerald-400">
+            <span>↑</span>
+            <span>ផ្ញើឡើង</span>
           </div>
-          <p class="text-sm font-extrabold tabular-nums"><span id="ulSpeedResult">—</span> <span class="text-[11px] font-normal text-zinc-400">Mbps</span></p>
-          <div class="h-0.5 w-full bg-emerald-500/40 rounded-full"></div>
+          <p class="text-sm font-extrabold tabular-nums"><span id="ulSpeedResult">—</span></p>
+          <p class="text-[10px] text-zinc-400">Mbps</p>
+          <div class="h-1 w-full rounded-full bg-emerald-500/30 overflow-hidden">
+            <div class="h-full w-1/2 bg-emerald-500 rounded-full"></div>
+          </div>
         </div>
 
-        <div class="rounded-2xl p-3 bg-zinc-50 dark:bg-zinc-900/75 border border-zinc-200/80 dark:border-zinc-800 space-y-2">
-          <div class="flex items-center gap-1.5">
-            <span class="w-5 h-5 rounded-full bg-sky-500/15 text-sky-400 flex items-center justify-center text-xs font-bold">~</span>
-            <span class="text-xs font-bold">Ping</span>
+        <div class="rounded-2xl p-3 bg-zinc-50 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-zinc-800 space-y-1">
+          <div class="flex items-center gap-1 text-[11px] font-bold text-sky-400">
+            <span>⚡</span>
+            <span>Ping</span>
           </div>
-          <p class="text-sm font-extrabold tabular-nums"><span id="pingResult">—</span> <span class="text-[11px] font-normal text-zinc-400">ms</span></p>
-          <div class="h-0.5 w-full bg-sky-500/40 rounded-full"></div>
+          <p class="text-sm font-extrabold tabular-nums"><span id="pingResult">—</span></p>
+          <p class="text-[10px] text-zinc-400">ms</p>
+          <div class="h-1 w-full rounded-full bg-sky-500/30 overflow-hidden">
+            <div class="h-full w-3/4 bg-sky-500 rounded-full"></div>
+          </div>
         </div>
+      </section>
+
+      <!-- កាត Tunnel Session & Route -->
+      <section class="rounded-2xl p-3.5 bg-zinc-50 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-zinc-800 space-y-2">
+        <div class="flex items-center justify-between text-[11px] font-bold tracking-wider uppercase text-zinc-500 dark:text-zinc-400">
+          <span>TUNNEL SESSION</span>
+          <span>ROUTE</span>
+        </div>
+        <div class="flex items-center justify-between text-xs font-extrabold tabular-nums">
+          <span id="tunnelSessionStats">↓ 0 B · ↑ 0 B</span>
+          <span id="tunnelRouteStatus" class="text-zinc-500 dark:text-zinc-400">Not started</span>
+        </div>
+        <p class="text-[11px] text-zinc-500 dark:text-zinc-400 leading-relaxed pt-1 border-t border-zinc-200/70 dark:border-zinc-800">
+          Every value above comes from bytes actually transferred or a real latency probe. Failed phases stay blank instead of showing a synthetic number.
+        </p>
       </section>
     </div>
 
@@ -418,42 +482,44 @@
     <div id="tab-logs" class="tab-panel hidden space-y-3">
       <div class="flex items-center justify-between">
         <h2 id="logsTabTitle" class="text-sm font-bold">កំណត់ហេតុប្រព័ន្ធ (System Logs)</h2>
-        <button id="clearLogsBtn" type="button" class="text-[11px] font-semibold text-orange-500 hover:underline cursor-pointer">សម្អាត</button>
+        <button id="clearLogsBtn" type="button" class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 transition cursor-pointer">
+          សម្អាត
+        </button>
       </div>
-      <div id="logsContainer" class="rounded-2xl p-3.5 bg-zinc-50 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-zinc-800 text-[11px] font-mono space-y-1.5 max-h-64 overflow-y-auto text-zinc-600 dark:text-zinc-300">
-        <p>[INFO] Portal initialized successfully.</p>
+      <div id="logsContainer" class="rounded-2xl p-3.5 bg-zinc-950 text-emerald-400 font-mono text-[11px] h-48 overflow-y-auto space-y-1.5 border border-zinc-800">
+        <p>[SYSTEM] Portal ready.</p>
       </div>
     </div>
 
     <!-- ផ្ទាំងទី ៥៖ ការកំណត់ (Settings Tab) -->
     <div id="tab-settings" class="tab-panel hidden space-y-3">
       <h2 id="settingsTabTitle" class="text-sm font-bold">ការកំណត់ (Settings)</h2>
-      <div class="rounded-2xl p-4 bg-zinc-50 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-zinc-800 space-y-3 text-xs">
-        <div class="flex items-center justify-between py-1 border-b border-zinc-200 dark:border-zinc-800">
-          <span class="text-zinc-500 dark:text-zinc-400">Subscription Name</span>
-          <span class="font-bold">TheBestVIP</span>
+      <div class="p-3.5 rounded-2xl bg-zinc-50 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-zinc-800 flex items-center justify-between">
+        <div>
+          <p class="text-xs font-bold">Subscription Name</p>
+          <p class="text-[11px] text-zinc-500 dark:text-zinc-400">TheBestVIP</p>
         </div>
-        <div class="flex items-center justify-between py-1 border-b border-zinc-200 dark:border-zinc-800">
-          <span class="text-zinc-500 dark:text-zinc-400">Protocol</span>
-          <span class="font-bold">V2Ray / Xray Core</span>
+        <span class="text-[11px] font-semibold text-zinc-400">Active</span>
+      </div>
+      <div class="p-3.5 rounded-2xl bg-zinc-50 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-zinc-800 flex items-center justify-between">
+        <div>
+          <p class="text-xs font-bold">Client Protocol</p>
+          <p class="text-[11px] text-zinc-500 dark:text-zinc-400">V2Box / Sing-box / Xray</p>
         </div>
-        <div class="flex items-center justify-between py-1">
-          <span class="text-zinc-500 dark:text-zinc-400">Version</span>
-          <span class="font-bold">v2.5.0 PRO</span>
-        </div>
+        <span class="text-[11px] font-semibold text-emerald-500">Supported</span>
       </div>
     </div>
 
   </main>
 
-  <!-- របារម៉ីនុយខាងក្រោម (Bottom Floating Navigation Bar ទាំង ៥) -->
-  <nav aria-label="Bottom Navigation" class="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-[94%] max-w-md rounded-full bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border border-zinc-200/90 dark:border-zinc-800 shadow-[0_12px_35px_rgba(0,0,0,0.14)] dark:shadow-[0_12px_35px_rgba(0,0,0,0.75)] px-2 py-2">
+  <!-- របារម៉ីនុយខាងក្រោមទាំង ៥ (Bottom Navigation Bar) -->
+  <nav aria-label="Primary Navigation" class="fixed bottom-4 left-1/2 -translate-x-1/2 w-[94%] max-w-md rounded-full bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border border-zinc-200 dark:border-zinc-800 shadow-[0_14px_35px_rgba(0,0,0,0.22)] px-2 py-2 z-40">
     <div class="grid grid-cols-5 items-center text-center">
       <!-- ១. ផ្ទះ -->
-      <button type="button" data-tab="home" class="nav-btn group flex flex-col items-center justify-center gap-1 cursor-pointer focus:outline-none">
+      <button type="button" data-tab="home" class="nav-btn group flex flex-col items-center justify-center gap-0.5 cursor-pointer">
         <span class="nav-pill px-4 py-1.5 rounded-full bg-orange-500/15 text-orange-500 transition-colors">
-          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z" />
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M11.47 3.84a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.06l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 0 0 1.061 1.06l8.69-8.69Z" />
             <path d="m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.432Z" />
           </svg>
         </span>
@@ -461,45 +527,42 @@
       </button>
 
       <!-- ២. ម៉ាស៊ីនបម្រើ -->
-      <button type="button" data-tab="servers" class="nav-btn group flex flex-col items-center justify-center gap-1 cursor-pointer focus:outline-none">
+      <button type="button" data-tab="servers" class="nav-btn group flex flex-col items-center justify-center gap-0.5 cursor-pointer">
         <span class="nav-pill px-4 py-1.5 rounded-full text-zinc-500 dark:text-zinc-400 transition-colors">
-          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-            <rect x="4" y="4" width="16" height="6.5" rx="2" />
-            <circle cx="7.5" cy="7.25" r="1" fill="#ffffff" />
-            <rect x="4" y="13.5" width="16" height="6.5" rx="2" />
-            <circle cx="7.5" cy="16.75" r="1" fill="#ffffff" />
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M4.5 3.75A2.25 2.25 0 0 0 2.25 6v2.25A2.25 2.25 0 0 0 4.5 10.5h15a2.25 2.25 0 0 0 2.25-2.25V6A2.25 2.25 0 0 0 19.5 3.75h-15Zm3 3.375a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM4.5 13.5A2.25 2.25 0 0 0 2.25 15.75V18A2.25 2.25 0 0 0 4.5 20.25h15A2.25 2.25 0 0 0 21.75 18v-2.25A2.25 2.25 0 0 0 19.5 13.5h-15Zm3 3.375a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
           </svg>
         </span>
         <span id="navServersLabel" class="nav-text text-[11px] font-medium text-zinc-500 dark:text-zinc-400 transition-colors">ម៉ាស៊ីនបម្រើ</span>
       </button>
 
       <!-- ៣. ល្បឿន -->
-      <button type="button" data-tab="speed" class="nav-btn group flex flex-col items-center justify-center gap-1 cursor-pointer focus:outline-none">
+      <button type="button" data-tab="speed" class="nav-btn group flex flex-col items-center justify-center gap-0.5 cursor-pointer">
         <span class="nav-pill px-4 py-1.5 rounded-full text-zinc-500 dark:text-zinc-400 transition-colors">
-          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 14l4-4" />
-            <path d="M3.34 17a10 10 0 1 1 17.32 0" />
-            <path d="M6 17h12" />
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M20.39 18.39A9 9 0 1 0 3.61 18.39" />
           </svg>
         </span>
         <span id="navSpeedLabel" class="nav-text text-[11px] font-medium text-zinc-500 dark:text-zinc-400 transition-colors">ល្បឿន</span>
       </button>
 
       <!-- ៤. កំណត់ហេតុ -->
-      <button type="button" data-tab="logs" class="nav-btn group flex flex-col items-center justify-center gap-1 cursor-pointer focus:outline-none">
+      <button type="button" data-tab="logs" class="nav-btn group flex flex-col items-center justify-center gap-0.5 cursor-pointer">
         <span class="nav-pill px-4 py-1.5 rounded-full text-zinc-500 dark:text-zinc-400 transition-colors">
-          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-            <path fill-rule="evenodd" d="M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V3.375c0-1.036-.84-1.875-1.875-1.875H5.625ZM7.5 6.75a.75.75 0 0 0 0 1.5h9a.75.75 0 0 0 0-1.5h-9Zm0 3.75a.75.75 0 0 0 0 1.5h9a.75.75 0 0 0 0-1.5h-9Zm0 3.75a.75.75 0 0 0 0 1.5h5.25a.75.75 0 0 0 0-1.5H7.5Z" clip-rule="evenodd" />
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V12.75A3.75 3.75 0 0 0 16.5 9h-1.875a1.875 1.875 0 0 1-1.875-1.875V5.25A3.75 3.75 0 0 0 9 1.5H5.625ZM7.5 15a.75.75 0 0 1 .75-.75h7.5a.75.75 0 0 1 0 1.5h-7.5A.75.75 0 0 1 7.5 15Zm.75 2.25a.75.75 0 0 0 0 1.5H12a.75.75 0 0 0 0-1.5H8.25Z" clip-rule="evenodd" />
+            <path d="M12.971 1.816A5.23 5.23 0 0 1 14.25 5.25v1.875c0 .207.168.375.375.375H16.5a5.23 5.23 0 0 1 3.434 1.279 9.768 9.768 0 0 0-6.963-6.963Z" />
           </svg>
         </span>
         <span id="navLogsLabel" class="nav-text text-[11px] font-medium text-zinc-500 dark:text-zinc-400 transition-colors">កំណត់ហេតុ</span>
       </button>
 
       <!-- ៥. ការកំណត់ -->
-      <button type="button" data-tab="settings" class="nav-btn group flex flex-col items-center justify-center gap-1 cursor-pointer focus:outline-none">
+      <button type="button" data-tab="settings" class="nav-btn group flex flex-col items-center justify-center gap-0.5 cursor-pointer">
         <span class="nav-pill px-4 py-1.5 rounded-full text-zinc-500 dark:text-zinc-400 transition-colors">
-          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-            <path fill-rule="evenodd" d="M11.078 2.25c-.917 0-1.699.663-1.85 1.567L9.05 4.889c-.02.12-.115.26-.297.348a7.493 7.493 0 0 0-.986.57c-.166.115-.334.126-.45.083L6.3 5.508a1.875 1.875 0 0 0-2.282.819l-.922 1.597a1.875 1.875 0 0 0 .432 2.385l.84.692c.095.078.17.229.154.43a7.598 7.598 0 0 0 0 1.139c.015.2-.059.352-.153.43l-.841.692a1.875 1.875 0 0 0-.432 2.385l.922 1.597a1.875 1.875 0 0 0 2.282.818l1.019-.382c.115-.043.283-.031.45.082.312.214.641.405.985.57.182.088.277.228.297.35l.178 1.071c.151.904.933 1.567 1.85 1.567h1.844c.916 0 1.699-.663 1.85-1.567l.178-1.072c.02-.12.114-.26.297-.349.344-.165.673-.356.985-.57.167-.114.335-.125.45-.082l1.02.382a1.875 1.875 0 0 0 2.28-.819l.923-1.597a1.875 1.875 0 0 0-.432-2.385l-.84-.692c-.095-.078-.17-.229-.154-.43a7.614 7.614 0 0 0 0-1.139c-.016-.2.059-.352.153-.43l.84-.692c.708-.582.891-1.59.433-2.385l-.922-1.597a1.875 1.875 0 0 0-2.282-.818l-1.02.382c-.114.043-.282.031-.449-.083a7.49 7.49 0 0 0-.985-.57c-.183-.087-.277-.227-.297-.348l-.179-1.072a1.875 1.875 0 0 0-1.85-1.567h-1.843ZM12 15.75a3.75 3.75 0 1 0 0-7.5 3.75 3.75 0 0 0 0 7.5Z" clip-rule="evenodd" />
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M11.078 2.25c-.917 0-1.699.663-1.85 1.567L9.05 4.889c-.02.12-.115.26-.297.348a7.493 7.493 0 0 0-.986.57c-.166.115-.334.126-.45.083L6.3 5.508a1.875 1.875 0 0 0-2.282.819l-.922 1.597a1.875 1.875 0 0 0 .432 2.385l.84.692c.095.078.17.229.154.43a7.598 7.598 0 0 0 0 1.139c.015.2-.059.352-.153.43l-.841.692a1.875 1.875 0 0 0-.432 2.385l.922 1.597a1.875 1.875 0 0 0 2.282.818l1.019-.382c.115-.043.283-.031.45.082.312.214.641.405.985.57.182.088.277.228.297.35l.178 1.071a1.875 1.875 0 0 0 1.85 1.567h1.844c.916 0 1.699-.663 1.85-1.567l.178-1.072c.02-.12.114-.26.297-.349.344-.165.673-.356.985-.57.167-.114.335-.125.45-.082l1.02.382a1.875 1.875 0 0 0 2.28-.819l.923-1.597a1.875 1.875 0 0 0-.432-2.385l-.84-.692c-.095-.078-.17-.229-.154-.43a7.614 7.614 0 0 0 0-1.139c-.016-.2.059-.352.153-.43l.84-.692c.7-.577.89-1.564.434-2.385l-.923-1.597a1.875 1.875 0 0 0-2.282-.818l-1.019.382c-.115.043-.283.031-.45-.082a7.494 7.494 0 0 0-.985-.57c-.183-.087-.277-.227-.297-.348l-.179-1.072a1.875 1.875 0 0 0-1.85-1.567h-1.843ZM12 15.75a3.75 3.75 0 1 0 0-7.5 3.75 3.75 0 0 0 0 7.5Z" clip-rule="evenodd" />
           </svg>
         </span>
         <span id="navSettingsLabel" class="nav-text text-[11px] font-medium text-zinc-500 dark:text-zinc-400 transition-colors">ការកំណត់</span>
@@ -509,7 +572,7 @@
 
   <script>
     (() => {
-      // ការកំណត់ព័ត៌មានមូលដ្ឋាន (Configuration)
+      // ការកំណត់មូលដ្ឋាន (Configuration)
       const CONFIG = {
         subName: "TheBestVIP",
         startDate: new Date("2026-11-01T00:00:00"),
@@ -517,56 +580,234 @@
         subUrl: new URL("sub.txt", window.location.href).href,
       };
 
-      // ស្ថានភាពកម្មវិធី (ប្រើភាសាខ្មែរជាចម្បង)
+      // វចនានុក្រមភាសា (ខ្មែរ / អង់គ្លេស)
+      const I18N = {
+        km: {
+          locale: "km-KH",
+          nextLang: "EN",
+          themeLight: "ស",
+          themeDark: "ខ្មៅ",
+          systemHealth: "ប្រព័ន្ធដំណើរការល្អ 99.8%",
+          dateTimeLabel: "ថ្ងៃខែ និង ម៉ោង",
+          ipLabel: "បណ្តាញ / IP បច្ចុប្បន្ន",
+          checkingIp: "កំពុងពិនិត្យ...",
+          regionPrefix: "តំបន់៖ ",
+          unableFetchIp: "មិនអាចទាញ IP",
+          checkConnection: "ពិនិត្យការភ្ជាប់អ៊ីនធឺណិត",
+          validityTitle: "សុពលភាពគណនី",
+          daysLeftBadge: (d) => `នៅសល់ ${d} ថ្ងៃ`,
+          expiredBadge: "ផុតកំណត់",
+          countdownFormat: (d, h, m, s) => `${d} ថ្ងៃ ${h} ម៉ោង ${m} នាទី ${s} វិនាទី`,
+          expiredCountdown: "00 ថ្ងៃ 00 ម៉ោង 00 នាទី 00 វិនាទី",
+          expiryPrefix: "ផុតកំណត់៖ ",
+          expiredStatus: "សុពលភាពគណនីបានផុតកំណត់ហើយ។",
+          nodesTitle: "កញ្ចប់ Server រួមបញ្ចូល (3 Nodes)",
+          lockedBadge: "🔒 Locked",
+          importMainTitle: "នាំចូលទៅកាន់ V2Box",
+          importSubTitle: "បើក និងទាញយក Server ភ្លាមៗ",
+          altMethodText: "វិធីទី ២ (Sub)",
+          copyBtnText: "ចម្លង Link",
+          defaultStatus: "ចុចប៊ូតុងខាងលើដើម្បីភ្ជាប់ដោយស្វ័យប្រវត្តិ",
+          openingV2Box: "កំពុងបញ្ជូនទៅកម្មវិធី V2Box...",
+          copiedSuccess: "បានចម្លង Link! ចូល V2Box > Configs > + > Add Subscription រួច Paste។",
+          copyFailed: "មិនអាចចម្លងដោយស្វ័យប្រវត្តិបានទេ។",
+          noAppTitle: "មិនទាន់មានកម្មវិធីមែនទេ?",
+          noAppDesc: "ទាញយក V2Box ដោយឥតគិតថ្លៃ",
+          serversTabTitle: "បញ្ជីម៉ាស៊ីនបម្រើ VIP (3 Nodes)",
+          logsTabTitle: "កំណត់ហេតុប្រព័ន្ធ (System Logs)",
+          clearLogsBtn: "សម្អាត",
+          settingsTabTitle: "ការកំណត់ (Settings)",
+          navHome: "ផ្ទះ",
+          navServers: "ម៉ាស៊ីនបម្រើ",
+          navSpeed: "ល្បឿន",
+          navLogs: "កំណត់ហេតុ",
+          navSettings: "ការកំណត់",
+        },
+        en: {
+          locale: "en-US",
+          nextLang: "ខ្មែរ",
+          themeLight: "Light",
+          themeDark: "Dark",
+          systemHealth: "System Operational 99.8%",
+          dateTimeLabel: "Date & Time",
+          ipLabel: "Network / Current IP",
+          checkingIp: "Checking...",
+          regionPrefix: "Region: ",
+          unableFetchIp: "Unable to fetch IP",
+          checkConnection: "Check internet connection",
+          validityTitle: "Account Validity",
+          daysLeftBadge: (d) => `${d} Days Left`,
+          expiredBadge: "Expired",
+          countdownFormat: (d, h, m, s) => `${d}d ${h}h ${m}m ${s}s`,
+          expiredCountdown: "00d 00h 00m 00s",
+          expiryPrefix: "Expires: ",
+          expiredStatus: "Account validity has expired.",
+          nodesTitle: "Included Servers (3 Nodes)",
+          lockedBadge: "🔒 Locked",
+          importMainTitle: "Import to V2Box",
+          importSubTitle: "Open and fetch servers instantly",
+          altMethodText: "Method 2 (Sub)",
+          copyBtnText: "Copy Link",
+          defaultStatus: "Tap the button above to import automatically",
+          openingV2Box: "Launching V2Box app...",
+          copiedSuccess: "Link copied! Open V2Box > Configs > + > Add Subscription and Paste.",
+          copyFailed: "Unable to copy automatically.",
+          noAppTitle: "Don't have the app yet?",
+          noAppDesc: "Download V2Box for free",
+          serversTabTitle: "VIP Server List (3 Nodes)",
+          logsTabTitle: "System Logs",
+          clearLogsBtn: "Clear",
+          settingsTabTitle: "Settings",
+          navHome: "Home",
+          navServers: "Servers",
+          navSpeed: "Speed",
+          navLogs: "Logs",
+          navSettings: "Settings",
+        },
+      };
+
+      // ស្ថានភាពកម្មវិធី
+      let currentLang = "km";
       let lastIpData = null;
       let isTestingSpeed = false;
 
-      // ប្រមូលផ្តុំធាតុ DOM
+      // ប្រមូលធាតុ DOM ដែលប្រើញឹកញាប់
       const dom = {
         html: document.documentElement,
+        langToggle: document.getElementById("langToggle"),
+        langLabel: document.getElementById("langLabel"),
         themeToggle: document.getElementById("themeToggle"),
         themeIcon: document.getElementById("themeIcon"),
         themeLabel: document.getElementById("themeLabel"),
+        systemHealthText: document.getElementById("systemHealthText"),
+        dateTimeLabel: document.getElementById("dateTimeLabel"),
+        currentTime: document.getElementById("currentTime"),
+        currentDate: document.getElementById("currentDate"),
+        ipLabel: document.getElementById("ipLabel"),
+        serverDot: document.getElementById("serverDot"),
+        serverDotPing: document.getElementById("serverDotPing"),
+        ipAddress: document.getElementById("ipAddress"),
+        ipMeta: document.getElementById("ipMeta"),
+        validityTitle: document.getElementById("validityTitle"),
+        expiryBadge: document.getElementById("expiryBadge"),
+        countdownText: document.getElementById("countdownText"),
+        expiryDateLabel: document.getElementById("expiryDateLabel"),
+        validityBar: document.getElementById("validityBar"),
+        nodesTitle: document.getElementById("nodesTitle"),
+        lockedBadge: document.getElementById("lockedBadge"),
         importLink: document.getElementById("importLink"),
         importAltLink: document.getElementById("importAltLink"),
         copySubBtn: document.getElementById("copySubBtn"),
+        importMainTitle: document.getElementById("importMainTitle"),
+        importSubTitle: document.getElementById("importSubTitle"),
+        altMethodText: document.getElementById("altMethodText"),
+        copyBtnText: document.getElementById("copyBtnText"),
         statusBox: document.getElementById("statusBox"),
-        ipAddress: document.getElementById("ipAddress"),
-        ipMeta: document.getElementById("ipMeta"),
-        serverDot: document.getElementById("serverDot"),
-        serverDotPing: document.getElementById("serverDotPing"),
-        currentDate: document.getElementById("currentDate"),
-        currentTime: document.getElementById("currentTime"),
-        expiryDateLabel: document.getElementById("expiryDateLabel"),
-        expiryBadge: document.getElementById("expiryBadge"),
-        countdownText: document.getElementById("countdownText"),
-        validityBar: document.getElementById("validityBar"),
-        logsContainer: document.getElementById("logsContainer"),
+        noAppTitle: document.getElementById("noAppTitle"),
+        noAppDesc: document.getElementById("noAppDesc"),
+        serversTabTitle: document.getElementById("serversTabTitle"),
+        logsTabTitle: document.getElementById("logsTabTitle"),
         clearLogsBtn: document.getElementById("clearLogsBtn"),
-        startSpeedBtn: document.getElementById("startSpeedBtn"),
+        logsContainer: document.getElementById("logsContainer"),
+        settingsTabTitle: document.getElementById("settingsTabTitle"),
+        navHomeLabel: document.getElementById("navHomeLabel"),
+        navServersLabel: document.getElementById("navServersLabel"),
+        navSpeedLabel: document.getElementById("navSpeedLabel"),
+        navLogsLabel: document.getElementById("navLogsLabel"),
+        navSettingsLabel: document.getElementById("navSettingsLabel"),
         speedLeftStatus: document.getElementById("speedLeftStatus"),
         speedRightStatus: document.getElementById("speedRightStatus"),
         peakSpeedValue: document.getElementById("peakSpeedValue"),
+        gaugeProgressArc: document.getElementById("gaugeProgressArc"),
+        gaugeNeedle: document.getElementById("gaugeNeedle"),
+        startSpeedBtn: document.getElementById("startSpeedBtn"),
         liveGaugeValue: document.getElementById("liveGaugeValue"),
         dlSpeedResult: document.getElementById("dlSpeedResult"),
         ulSpeedResult: document.getElementById("ulSpeedResult"),
         pingResult: document.getElementById("pingResult"),
-        gaugeProgressArc: document.getElementById("gaugeProgressArc"),
-        gaugeNeedle: document.getElementById("gaugeNeedle"),
+        tunnelSessionStats: document.getElementById("tunnelSessionStats"),
+        tunnelRouteStatus: document.getElementById("tunnelRouteStatus"),
       };
 
-      // មុខងារបន្ថែមកំណត់ហេតុ (Logs)
+      function tr() {
+        return I18N[currentLang] || I18N.km;
+      }
+
+      // កត់ត្រាកំណត់ហេតុប្រព័ន្ធ
       function addLog(message) {
         if (!dom.logsContainer) return;
-        const time = new Date().toLocaleTimeString("en-GB", { hour12: false });
+        const timeStr = new Date().toLocaleTimeString("en-GB", { hour12: false });
         const line = document.createElement("p");
-        line.textContent = `[${time}] ${message}`;
-        dom.logsContainer.prepend(line);
+        line.textContent = `[${timeStr}] ${message}`;
+        dom.logsContainer.appendChild(line);
+        dom.logsContainer.scrollTop = dom.logsContainer.scrollHeight;
       }
 
       if (dom.clearLogsBtn) {
         dom.clearLogsBtn.addEventListener("click", () => {
           dom.logsContainer.innerHTML = `<p>[INFO] Logs cleared.</p>`;
+        });
+      }
+
+      // មុខងារប្តូរផ្ទៃពណ៌ ខ្មៅ / ស (Dark / Light Theme)
+      function updateThemeUI() {
+        const isDark = dom.html.classList.contains("dark");
+        dom.themeIcon.textContent = isDark ? "☀️" : "🌙";
+        dom.themeLabel.textContent = isDark ? tr().themeLight : tr().themeDark;
+      }
+
+      dom.themeToggle.addEventListener("click", () => {
+        dom.html.classList.toggle("dark");
+        updateThemeUI();
+        addLog(`Switched theme to ${dom.html.classList.contains("dark") ? "Dark" : "Light"} mode.`);
+      });
+
+      // មុខងារប្តូរភាសា (Khmer / English)
+      function applyLanguageUI() {
+        const t = tr();
+        dom.html.lang = currentLang;
+        if (dom.langLabel) dom.langLabel.textContent = t.nextLang;
+        if (dom.systemHealthText) dom.systemHealthText.textContent = t.systemHealth;
+        if (dom.dateTimeLabel) dom.dateTimeLabel.textContent = t.dateTimeLabel;
+        if (dom.ipLabel) dom.ipLabel.textContent = t.ipLabel;
+        if (!lastIpData && dom.ipAddress) dom.ipAddress.textContent = t.checkingIp;
+        if (dom.validityTitle) dom.validityTitle.textContent = t.validityTitle;
+        if (dom.nodesTitle) dom.nodesTitle.textContent = t.nodesTitle;
+        if (dom.lockedBadge) dom.lockedBadge.textContent = t.lockedBadge;
+        if (dom.importMainTitle) dom.importMainTitle.textContent = t.importMainTitle;
+        if (dom.importSubTitle) dom.importSubTitle.textContent = t.importSubTitle;
+        if (dom.altMethodText) dom.altMethodText.textContent = t.altMethodText;
+        if (dom.copyBtnText) dom.copyBtnText.textContent = t.copyBtnText;
+        if (dom.noAppTitle) dom.noAppTitle.textContent = t.noAppTitle;
+        if (dom.noAppDesc) dom.noAppDesc.textContent = t.noAppDesc;
+        if (dom.serversTabTitle) dom.serversTabTitle.textContent = t.serversTabTitle;
+        if (dom.logsTabTitle) dom.logsTabTitle.textContent = t.logsTabTitle;
+        if (dom.clearLogsBtn) dom.clearLogsBtn.textContent = t.clearLogsBtn;
+        if (dom.settingsTabTitle) dom.settingsTabTitle.textContent = t.settingsTabTitle;
+        if (dom.navHomeLabel) dom.navHomeLabel.textContent = t.navHome;
+        if (dom.navServersLabel) dom.navServersLabel.textContent = t.navServers;
+        if (dom.navSpeedLabel) dom.navSpeedLabel.textContent = t.navSpeed;
+        if (dom.navLogsLabel) dom.navLogsLabel.textContent = t.navLogs;
+        if (dom.navSettingsLabel) dom.navSettingsLabel.textContent = t.navSettings;
+
+        if (
+          dom.statusBox &&
+          (dom.statusBox.textContent.trim() === I18N.km.defaultStatus ||
+            dom.statusBox.textContent.trim() === I18N.en.defaultStatus)
+        ) {
+          dom.statusBox.textContent = t.defaultStatus;
+        }
+
+        updateThemeUI();
+        renderIpMeta();
+        updateClockAndValidity();
+      }
+
+      if (dom.langToggle) {
+        dom.langToggle.addEventListener("click", () => {
+          currentLang = currentLang === "km" ? "en" : "km";
+          applyLanguageUI();
+          addLog(`Switched language to ${currentLang.toUpperCase()}.`);
         });
       }
 
@@ -603,7 +844,7 @@
       dom.importAltLink.href = `sub://${btoa(CONFIG.subUrl)}#${encodeURIComponent(CONFIG.subName)}`;
 
       dom.importLink.addEventListener("click", () => {
-        dom.statusBox.textContent = "កំពុងបញ្ជូនទៅកម្មវិធី V2Box...";
+        dom.statusBox.textContent = tr().openingV2Box;
         addLog("Triggered V2Box deep-link import.");
       });
 
@@ -618,71 +859,93 @@
         textArea.style.position = "fixed";
         textArea.style.left = "-9999px";
         document.body.appendChild(textArea);
-        textArea.focus();
         textArea.select();
-        const successful = document.execCommand("copy");
+        const ok = document.execCommand("copy");
         document.body.removeChild(textArea);
-        if (!successful) throw new Error("Copy failed");
+        if (!ok) {
+          throw new Error("Copy failed");
+        }
       }
 
       dom.copySubBtn.addEventListener("click", async () => {
         try {
           await copyTextToClipboard(CONFIG.subUrl);
-          dom.statusBox.textContent = "បានចម្លង Link! ចូល V2Box > Configs > + > Add Subscription រួច Paste។";
-          addLog("Subscription URL copied to clipboard.");
+          dom.statusBox.textContent = tr().copiedSuccess;
+          addLog("Copied subscription URL to clipboard.");
         } catch {
-          dom.statusBox.textContent = "មិនអាចចម្លងដោយស្វ័យប្រវត្តិបានទេ។";
+          dom.statusBox.textContent = tr().copyFailed;
+          addLog("Failed to copy subscription URL.");
         }
-      });
-
-      // ប្តូរផ្ទៃពណ៌ ខ្មៅ / ស (Dark / Light Theme)
-      function updateThemeUI() {
-        const isDark = dom.html.classList.contains("dark");
-        dom.themeIcon.textContent = isDark ? "☀️" : "🌙";
-        dom.themeLabel.textContent = isDark ? "ស" : "ខ្មៅ";
-      }
-
-      dom.themeToggle.addEventListener("click", () => {
-        dom.html.classList.toggle("dark");
-        updateThemeUI();
       });
 
       // បង្ហាញព័ត៌មាន IP និងតំបន់
       function renderIpMeta() {
         if (!lastIpData) return;
+
         if (lastIpData.type === "success") {
           dom.ipAddress.textContent = lastIpData.ip;
           const extra = lastIpData.http ? ` • ${lastIpData.http}` : "";
-          dom.ipMeta.textContent = `តំបន់៖ ${lastIpData.region}${extra}`;
-        } else {
-          dom.ipAddress.textContent = "មិនអាចទាញ IP";
-          dom.ipMeta.textContent = "ពិនិត្យការភ្ជាប់អ៊ីនធឺណិត";
+          dom.ipMeta.textContent = `${tr().regionPrefix}${lastIpData.region}${extra}`;
+          if (dom.tunnelRouteStatus) {
+            dom.tunnelRouteStatus.textContent = lastIpData.region;
+          }
+        } else if (lastIpData.type === "error") {
+          dom.ipAddress.textContent = tr().unableFetchIp;
+          dom.ipMeta.textContent = tr().checkConnection;
         }
+      }
+
+      // កំណត់ទីតាំងម្ជុល និងកម្រងកោងនាឡិកាវាស់ល្បឿន (ស្តង់ដារ 0 - 1k Mbps)
+      function getStandardScaleRatio(mbps) {
+        const val = Math.max(0, Math.min(1000, Number(mbps) || 0));
+        // ចំណុចយោងតាមមាត្រដ្ឋាន 0, 5, 10, 50, 100, 250, 500, 750, 1000 (0.0 ដល់ 1.0)
+        const stops = [
+          [0, 0.0],
+          [5, 0.125],
+          [10, 0.25],
+          [50, 0.375],
+          [100, 0.5],
+          [250, 0.625],
+          [500, 0.75],
+          [750, 0.875],
+          [1000, 1.0],
+        ];
+
+        for (let i = 0; i < stops.length - 1; i++) {
+          const [v0, r0] = stops[i];
+          const [v1, r1] = stops[i + 1];
+          if (val >= v0 && val <= v1) {
+            const localT = (val - v0) / Math.max(1e-6, v1 - v0);
+            return r0 + localT * (r1 - r0);
+          }
+        }
+        return 1.0;
       }
 
       // គណនាម៉ោង និងសុពលភាពគណនីរៀងរាល់វិនាទី
       function updateClockAndValidity() {
         const now = new Date();
+        const t = tr();
 
-        dom.currentDate.textContent = now.toLocaleDateString("km-KH", {
+        dom.currentDate.textContent = now.toLocaleDateString(t.locale, {
           weekday: "short",
           year: "numeric",
           month: "short",
           day: "numeric",
         });
         dom.currentTime.textContent = now.toLocaleTimeString("en-GB", { hour12: false });
-        dom.expiryDateLabel.textContent = `ផុតកំណត់៖ ${CONFIG.expiryDate.toLocaleDateString("en-GB")}`;
+        dom.expiryDateLabel.textContent = `${t.expiryPrefix}${CONFIG.expiryDate.toLocaleDateString("en-GB")}`;
 
         const totalDuration = CONFIG.expiryDate.getTime() - CONFIG.startDate.getTime();
         const remaining = CONFIG.expiryDate.getTime() - now.getTime();
 
         if (remaining <= 0) {
-          dom.expiryBadge.textContent = "ផុតកំណត់";
-          dom.countdownText.textContent = "00 ថ្ងៃ 00 ម៉ោង 00 នាទី 00 វិនាទី";
+          dom.expiryBadge.textContent = t.expiredBadge;
+          dom.countdownText.textContent = t.expiredCountdown;
           dom.validityBar.style.width = "0%";
           dom.importLink.classList.add("opacity-40", "pointer-events-none");
           dom.importAltLink.classList.add("opacity-40", "pointer-events-none");
-          dom.statusBox.textContent = "សុពលភាពគណនីបានផុតកំណត់ហើយ។";
+          dom.statusBox.textContent = t.expiredStatus;
           return;
         }
 
@@ -691,8 +954,13 @@
         const minutes = Math.floor((remaining / (1000 * 60)) % 60);
         const seconds = Math.floor((remaining / 1000) % 60);
 
-        dom.expiryBadge.textContent = `នៅសល់ ${days} ថ្ងៃ`;
-        dom.countdownText.textContent = `${days} ថ្ងៃ ${String(hours).padStart(2, "0")} ម៉ោង ${String(minutes).padStart(2, "0")} នាទី ${String(seconds).padStart(2, "0")} វិនាទី`;
+        dom.expiryBadge.textContent = t.daysLeftBadge(days);
+        dom.countdownText.textContent = t.countdownFormat(
+          days,
+          String(hours).padStart(2, "0"),
+          String(minutes).padStart(2, "0"),
+          String(seconds).padStart(2, "0")
+        );
 
         const pct = totalDuration > 0
           ? Math.max(0, Math.min(100, (remaining / totalDuration) * 100))
@@ -703,10 +971,11 @@
       // កំណត់ទីតាំងម្ជុល និងកម្រងកោងនាឡិកាវាស់ល្បឿន (0 - 1000 Mbps)
       function setGaugeValue(mbps) {
         const clamped = Math.max(0, Math.min(1000, Number(mbps) || 0));
-        const ratio = clamped / 1000;
+        const ratio = getStandardScaleRatio(clamped);
         const maxDashOffset = 445;
         const offset = maxDashOffset - ratio * maxDashOffset;
-        const angleDeg = -125 + ratio * 250;
+        // -90deg គឺចង្អុលត្រង់ទៅលេខ 0 (ខាងឆ្វេង) ដល់ +90deg ត្រង់លេខ 1000 (ខាងស្តាំ)
+        const angleDeg = -90 + ratio * 180;
 
         if (dom.gaugeProgressArc) {
           dom.gaugeProgressArc.style.strokeDashoffset = offset.toFixed(1);
@@ -730,6 +999,9 @@
         dom.pingResult.textContent = "...";
         dom.dlSpeedResult.textContent = "...";
         dom.ulSpeedResult.textContent = "...";
+        if (dom.tunnelRouteStatus) {
+          dom.tunnelRouteStatus.textContent = "Testing...";
+        }
         setGaugeValue(0);
 
         let peakMbps = 0;
@@ -753,9 +1025,9 @@
           const dlRes = await fetch(`https://speed.cloudflare.com/__down?bytes=${dlBytes}&t=${Date.now()}`, { cache: "no-store" });
           const dlBlob = await dlRes.blob();
           const dlSec = Math.max(0.05, (performance.now() - dlStart) / 1000);
-          const dlMbps = Number(((dlBlob.size * 8) / dlSec / 1_000_000).toFixed(1));
+          const dlMbps = Number(((dlBlob.size * 8) / dlSec / 1_000_000).toFixed(2));
 
-          dom.dlSpeedResult.textContent = dlMbps.toFixed(1);
+          dom.dlSpeedResult.textContent = dlMbps.toFixed(2);
           recordPeak(dlMbps);
           setGaugeValue(dlMbps);
 
@@ -768,26 +1040,36 @@
             cache: "no-store",
           });
           const ulSec = Math.max(0.05, (performance.now() - ulStart) / 1000);
-          const ulMbps = Number(((ulPayload.byteLength * 8) / ulSec / 1_000_000).toFixed(1));
+          const ulMbps = Number(((ulPayload.byteLength * 8) / ulSec / 1_000_000).toFixed(2));
 
-          dom.ulSpeedResult.textContent = ulMbps.toFixed(1);
+          dom.ulSpeedResult.textContent = ulMbps.toFixed(2);
           recordPeak(ulMbps);
           setGaugeValue(ulMbps);
+
+          if (dom.tunnelSessionStats) {
+            dom.tunnelSessionStats.textContent = `↓ ${(dlBlob.size / 1_000_000).toFixed(2)} MB · ↑ ${(ulPayload.byteLength / 1_000_000).toFixed(2)} MB`;
+          }
+          if (dom.tunnelRouteStatus) {
+            dom.tunnelRouteStatus.textContent = lastIpData && lastIpData.region ? lastIpData.region : "Completed";
+          }
 
           dom.speedLeftStatus.textContent = "រួចរាល់";
           dom.speedRightStatus.textContent = "រួចរាល់";
           addLog(`Speed Test finished — DL: ${dlMbps} Mbps, UL: ${ulMbps} Mbps, Ping: ${pingMs} ms`);
         } catch {
           const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-          const fallbackMbps = conn && conn.downlink ? Number(conn.downlink.toFixed(1)) : 0;
+          const fallbackMbps = conn && conn.downlink ? Number(conn.downlink.toFixed(2)) : 0;
           if (fallbackMbps > 0) {
-            dom.dlSpeedResult.textContent = fallbackMbps.toFixed(1);
-            dom.ulSpeedResult.textContent = (fallbackMbps * 0.6).toFixed(1);
+            dom.dlSpeedResult.textContent = fallbackMbps.toFixed(2);
+            dom.ulSpeedResult.textContent = (fallbackMbps * 0.6).toFixed(2);
             recordPeak(fallbackMbps);
             setGaugeValue(fallbackMbps);
           } else {
             dom.dlSpeedResult.textContent = "N/A";
             dom.ulSpeedResult.textContent = "N/A";
+          }
+          if (dom.tunnelRouteStatus) {
+            dom.tunnelRouteStatus.textContent = "Fallback";
           }
           dom.speedLeftStatus.textContent = "រួចរាល់";
           dom.speedRightStatus.textContent = "រួចរាល់";
@@ -800,6 +1082,12 @@
 
       if (dom.startSpeedBtn) {
         dom.startSpeedBtn.addEventListener("click", runSpeedTest);
+        dom.startSpeedBtn.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            runSpeedTest();
+          }
+        });
       }
 
       // ស្វែងរក IP ពិតប្រាកដ និងប្រទេស/តំបន់
@@ -841,7 +1129,7 @@
 
           lastIpData = {
             type: "success",
-            ip: map.ip || "មិនអាចទាញ IP",
+            ip: map.ip || tr().unableFetchIp,
             region: regionLabel,
             http: map.http || "HTTPS",
           };
@@ -861,7 +1149,7 @@
       // ចាប់ផ្តើមដំណើរការប្រព័ន្ធ
       addLog("TheBest VIP Portal initialized.");
       setInterval(updateClockAndValidity, 1000);
-      updateThemeUI();
+      applyLanguageUI();
       updateClockAndValidity();
       detectLiveIPAndRegion();
     })();
