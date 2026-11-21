@@ -52,7 +52,7 @@
       </button>
     </header>
 
-    <!-- ផ្នែកទី ១៖ ម៉ោង ថ្ងៃបច្ចុប្បន្ន និង IP -->
+    <!-- ផ្នែកទី ១៖ ម៉ោង ថ្ងៃបច្ចុប្បន្ន និង ម៉ាស៊ីនមេ Server -->
     <section class="grid grid-cols-2 gap-3">
       <div class="rounded-2xl p-3.5 bg-zinc-50 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-zinc-800">
         <p class="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">ថ្ងៃខែ និង ម៉ោង</p>
@@ -61,9 +61,12 @@
       </div>
 
       <div class="rounded-2xl p-3.5 bg-zinc-50 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-zinc-800">
-        <p class="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">បណ្តាញ / IP បច្ចុប្បន្ន</p>
-        <p id="ipAddress" class="text-sm font-bold truncate mt-1 tabular-nums">កំពុងពិនិត្យ...</p>
-        <p id="ipLocation" class="text-[11px] text-zinc-500 dark:text-zinc-400 truncate mt-0.5">Network Ready</p>
+        <div class="flex items-center justify-between">
+          <p class="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">បណ្តាញ / IP បច្ចុប្បន្ន</p>
+          <span id="serverDot" class="w-2 h-2 rounded-full bg-zinc-400 animate-pulse"></span>
+        </div>
+        <p id="ipAddress" class="text-sm font-extrabold truncate mt-1 tabular-nums">កំពុងពិនិត្យ...</p>
+        <p id="ipMeta" class="text-[11px] text-zinc-500 dark:text-zinc-400 truncate mt-0.5">តំបន់៖ --</p>
       </div>
     </section>
 
@@ -241,40 +244,55 @@
       const barEl = document.getElementById("validityBar");
 
       if (remaining <= 0) {
-        badgeEl.textContent = "អស់សុពលភាព";
-        countdownEl.textContent = "0 ថ្ងៃ 0 ម៉ោង 0 នាទី";
-        barEl.style.width = "0%";
-        importLinkEl.classList.add("opacity-40", "pointer-events-none");
-        return;
+    // ទាញយក IP ពិតប្រាកដ និងប្រទេស/តំបន់ដែលកំពុងភ្ជាប់ (តាមរយៈ V2Box / ISP)
+    async function detectLiveIPAndRegion() {
+      const ipEl = document.getElementById("ipAddress");
+      const metaEl = document.getElementById("ipMeta");
+      const dotEl = document.getElementById("serverDot");
+
+      try {
+        // ព្យាយាមទាញទិន្នន័យ IP + ប្រទេស (Country Code & Name) ពី ipwho.is
+        const res = await fetch("https://ipwho.is/?t=" + Date.now(), { cache: "no-store" });
+        const data = await res.json();
+
+        if (data && data.success && data.ip) {
+          const code = (data.country_code || "").toUpperCase();
+          const name = data.country || "";
+          // បង្ហាញឈ្មោះច្បាស់ដូចជា KH ឬ Singapore (SG) តាមការភ្ជាប់ជាក់ស្តែង
+          const regionText = code === "SG"
+            ? "Singapore (SG)"
+            : (code ? `${code} • ${name}` : name || "Active Route");
+
+          ipEl.textContent = data.ip;
+          metaEl.textContent = `តំបន់៖ ${regionText}`;
+          dotEl.className = "w-2 h-2 rounded-full bg-emerald-500";
+          return;
+        }
+      } catch (e) {
+        // បន្តទៅ fallback ខាងក្រោមបើ ipwho.is មិនឆ្លើយតប
       }
 
-      const days = Math.floor(remaining / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((remaining / (1000 * 60 * 60)) % 24);
-      const minutes = Math.floor((remaining / (1000 * 60)) % 60);
-      const seconds = Math.floor((remaining / 1000) % 60);
-
-      badgeEl.textContent = `នៅសល់ ${days} ថ្ងៃ`;
-      countdownEl.textContent = `${days} ថ្ងៃ ${hours} ម៉ោង ${minutes} នាទី ${seconds} វិ`;
-
-      const percent = totalDuration > 0 ? Math.max(0, Math.min(100, (remaining / totalDuration) * 100)) : 100;
-      barEl.style.width = `${percent.toFixed(1)}%`;
-    }
-    setInterval(updateClockAndValidity, 1000);
-    updateClockAndValidity();
-
-    // ទាញយក IP
-    async function fetchNetworkInfo() {
-      const ipEl = document.getElementById("ipAddress");
-      const locEl = document.getElementById("ipLocation");
       try {
-        const res = await fetch("https://1.1.1.1/cdn-cgi/trace");
-        const text = await res.text();
-        const lines = Object.fromEntries(text.trim().split("\n").map(line => line.split("=")));
-        ipEl.textContent = lines.ip || "Connected";
-        locEl.textContent = lines.loc ? `តំបន់៖ ${lines.loc} • ${lines.http || "HTTPS"}` : "Active Connection";
-      } catch (e) {
-        ipEl.textContent = "Online";
-        locEl.textContent = "Ready to Connect";
+        // ប្រភពបម្រុងពី Cloudflare trace (មាន loc=KH ឬ loc=SG)
+        const cfRes = await fetch("https://1.1.1.1/cdn-cgi/trace?t=" + Date.now(), { cache: "no-store" });
+        const cfText = await cfRes.text();
+        const map = Object.fromEntries(
+          cfText.trim().split("\n").map(line => {
+            const idx = line.indexOf("=");
+            return idx > -1 ? [line.slice(0, idx), line.slice(idx + 1)] : [line, ""];
+          })
+        );
+
+        const loc = (map.loc || "").toUpperCase();
+        const regionLabel = loc === "SG" ? "Singapore (SG)" : (loc || "Unknown");
+
+        ipEl.textContent = map.ip || "មិនអាចទាញ IP";
+        metaEl.textContent = `តំបន់៖ ${regionLabel} • ${map.http || "HTTPS"}`;
+        dotEl.className = "w-2 h-2 rounded-full bg-emerald-500";
+      } catch (err) {
+        ipEl.textContent = "មិនអាចទាញ IP";
+        metaEl.textContent = "ពិនិត្យការភ្ជាប់អ៊ីនធឺណិត";
+        dotEl.className = "w-2 h-2 rounded-full bg-zinc-500";
       }
     }
 
@@ -314,7 +332,7 @@
 
     document.getElementById("speedTestBtn").addEventListener("click", runSpeedTest);
     window.addEventListener("load", () => {
-      fetchNetworkInfo();
+      detectLiveIPAndRegion();
       runSpeedTest();
     });
   </script>
