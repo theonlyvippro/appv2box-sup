@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Import 3 Servers to V2Box</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #f8fafc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 16px;
+    }
+    .card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 14px;
+      padding: 24px;
+      max-width: 390px;
+      width: 100%;
+      text-align: center;
+    }
+    .btn {
+      width: 100%;
+      padding: 14px 18px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #ffffff;
+      background: #2563eb;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .btn:active {
+      background: #1d4ed8;
+    }
+    .status {
+      margin-top: 12px;
+      font-size: 13px;
+      color: #94a3b8;
+      min-height: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>VIP Subscription (3 Servers)</h2>
+    <p>ចុចប៊ូតុងខាងក្រោមដើម្បីបញ្ចូល Servers ទាំង ៣ ចូល V2Box។</p>
+    <button id="importBtn" class="btn" type="button">Import 3 Servers to V2Box</button>
+    <div id="status" class="status"></div>
+  </div>
+
+  <script>
+    // 1. ដាក់ Link Server ទាំង 3 នៅទីនេះ (1 Server = 1 element ក្នុង array)
+    // ពិនិត្យកុំឱ្យមានអក្សរដាច់ៗដូចជា 0%9F%92%AF នៅខាងមុខ
+    const servers = [
+      "vless://YOUR_UUID@server1.example.com:80?path=%2Fray&security=none&encryption=none&host=host1.example.com&type=ws#Server1",
+      "vless://YOUR_UUID@server2.example.com:80?path=%2Fray&security=none&encryption=none&host=host2.example.com&type=ws#Server2",
+      "vless://YOUR_UUID@server3.example.com:80?path=%2Fray&security=none&encryption=none&host=host3.example.com&type=ws#Server3"
+    ];
+
+    const subName = "KH VIP 3 Servers";
+
+    // បម្លែងបញ្ជី Servers ទាំង 3 ទៅជា Base64 (គាំទ្រ UTF-8 / Emoji)
+    function encodeServersToBase64(list) {
+      const joined = list.map(s => s.trim()).filter(Boolean).join("\n");
+      const bytes = new TextEncoder().encode(joined);
+      let binary = "";
+      for (let i = 0; i < bytes.length; i++) {
+        binary += String.fromCharCode(bytes[i]);
+      }
+      return btoa(binary);
+    }
+
+    // បង្កើត Data URI Subscription សម្រាប់បញ្ជូនទៅ V2Box ដោយមិនត្រូវការ File ខាងក្រៅ
+    function buildSubDataUrl(base64Content) {
+      return `data:text/plain;base64,${base64Content}`;
+    }
+
+    function buildV2BoxScheme(subUrl, name) {
+      return `v2box://install-sub?url=${encodeURIComponent(subUrl)}&name=${encodeURIComponent(name)}`;
+    }
+
+    document.getElementById("importBtn").addEventListener("click", () => {
+      const statusEl = document.getElementById("status");
+
+      if (servers.length === 0) {
+        statusEl.textContent = "មិនមាន Server ក្នុងបញ្ជីទេ។";
+        return;
+      }
+
+      const base64Sub = encodeServersToBase64(servers);
+      const subDataUrl = buildSubDataUrl(base64Sub);
+      const v2boxLink = buildV2BoxScheme(subDataUrl, subName);
+
+      statusEl.textContent = "កំពុងបើក V2Box...";
+      window.location.href = v2boxLink;
+    });
+  </script>
+</body>
+</html>
