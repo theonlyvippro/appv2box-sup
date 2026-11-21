@@ -244,6 +244,32 @@
       const barEl = document.getElementById("validityBar");
 
       if (remaining <= 0) {
+        badgeEl.textContent = "ផុតកំណត់";
+        countdownEl.textContent = "00 ថ្ងៃ 00 ម៉ោង 00 នាទី";
+        barEl.style.width = "0%";
+        importLinkEl.classList.add("opacity-40", "pointer-events-none");
+        importAltLinkEl.classList.add("opacity-40", "pointer-events-none");
+        statusBox.textContent = "សុពលភាពគណនីបានផុតកំណត់ហើយ។";
+        return;
+      }
+
+      const days = Math.floor(remaining / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((remaining / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((remaining / (1000 * 60)) % 60);
+      const seconds = Math.floor((remaining / 1000) % 60);
+
+      badgeEl.textContent = `នៅសល់ ${days} ថ្ងៃ`;
+      countdownEl.textContent = `${days} ថ្ងៃ ${String(hours).padStart(2, "0")} ម៉ោង ${String(minutes).padStart(2, "0")} នាទី ${String(seconds).padStart(2, "0")} វិនាទី`;
+
+      const pct = totalDuration > 0
+        ? Math.max(0, Math.min(100, (remaining / totalDuration) * 100))
+        : 100;
+      barEl.style.width = pct.toFixed(1) + "%";
+    }
+
+    updateClockAndValidity();
+    setInterval(updateClockAndValidity, 1000);
+
     // ទាញយក IP ពិតប្រាកដ និងប្រទេស/តំបន់ដែលកំពុងភ្ជាប់ (តាមរយៈ V2Box / ISP)
     async function detectLiveIPAndRegion() {
       const ipEl = document.getElementById("ipAddress");
