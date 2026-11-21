@@ -281,10 +281,10 @@
         </div>
 
         <div class="flex items-center gap-1.5 shrink-0">
-          <a href="https://apps.apple.com/app/v2box-v2ray-client/id6446814690" target="_blank" rel="noopener noreferrer" class="px-3 py-2 rounded-xl bg-zinc-200/80 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white text-xs font-bold transition">
+          <a id="iosDownloadLink" href="https://apps.apple.com/app/v2box-v2ray-client/id6446814690" target="_blank" rel="noopener noreferrer" class="px-3 py-2 rounded-xl bg-zinc-200/80 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white text-xs font-bold transition no-underline">
             iOS
           </a>
-          <a href="https://play.google.com/store/apps/details?id=dev.hexasoftware.v2box" target="_blank" rel="noopener noreferrer" class="px-3 py-2 rounded-xl bg-zinc-200/80 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white text-xs font-bold transition">
+          <a id="androidDownloadLink" href="https://play.google.com/store/apps/details?id=dev.hexasoftware.v2box" target="_blank" rel="noopener noreferrer" class="px-3 py-2 rounded-xl bg-zinc-200/80 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white text-xs font-bold transition no-underline">
             Android
           </a>
         </div>
@@ -983,8 +983,6 @@
             label.classList.toggle("dark:text-zinc-400", !isActive);
           }
         });
-
-        addLog(`Switched to tab: ${tabName}`);
       }
 
       navButtons.forEach((btn) => {
@@ -993,39 +991,67 @@
         });
       });
 
-      // មុខងារចម្លងអត្ថបទទៅ Clipboard
+      // មុខងារចម្លងអត្ថបទទៅ Clipboard ដែលដំណើរការលើគ្រប់ Browser/Iframe
       async function copyTextToClipboard(text) {
-        if (navigator.clipboard && window.isSecureContext) {
-          await navigator.clipboard.writeText(text);
-          return;
+        const value = String(text || "");
+        try {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(value);
+            return;
+          }
+        } catch {
+          // ប្រើវិធីបម្រុង execCommand ប្រសិនបើ clipboard API ត្រូវបានរារាំង
         }
-        const helper = document.createElement("textarea");
-        helper.value = text;
-        helper.setAttribute("readonly", "");
-        helper.style.position = "fixed";
-        helper.style.opacity = "0";
-        document.body.appendChild(helper);
-        helper.select();
-        document.execCommand("copy");
-        document.body.removeChild(helper);
+
+        const textarea = document.createElement("textarea");
+        textarea.value = value;
+        textarea.setAttribute("readonly", "");
+        textarea.style.position = "fixed";
+        textarea.style.opacity = "0";
+        document.body.appendChild(textarea);
+        textarea.select();
+        const ok = document.execCommand("copy");
+        document.body.removeChild(textarea);
+        if (!ok) {
+          throw new Error("Copy failed");
+        }
       }
 
-      // ភ្ជាប់ Link នាំចូល V2Box
+      // ភ្ជាប់ Link នាំចូល V2Box ឱ្យដំណើរការត្រឹមត្រូវ (មិន encode URL ដើម្បីកុំឱ្យ V2Box Error)
       function setupImportLinks() {
-        const encodedSubUrl = encodeURIComponent(CONFIG.subUrl);
+        const cleanSubUrl = String(CONFIG.subUrl || "").trim();
         const encodedName = encodeURIComponent(CONFIG.subName);
-        dom.importLink.href = `v2box://install-sub?url=${encodedSubUrl}&name=${encodedName}`;
-        dom.importAltLink.href = `v2box://sub?url=${encodedSubUrl}#${encodedName}`;
 
-        dom.importLink.addEventListener("click", () => {
-          dom.statusBox.textContent = tr().openingV2Box;
-          addLog(`Opened V2Box import scheme for ${CONFIG.subName}.`);
-        });
+        // V2Box ត្រូវការ raw URL ត្រង់នៅក្នុង parameter url= ដើម្បីទាញយក sub.txt បានជោគជ័យ
+        const primaryScheme = `v2box://install-sub?url=${cleanSubUrl}&name=${encodedName}`;
+        const altScheme = `v2box://sub?url=${cleanSubUrl}#${encodedName}`;
 
-        dom.importAltLink.addEventListener("click", () => {
-          dom.statusBox.textContent = tr().openingV2Box;
-          addLog(`Opened V2Box alt subscription scheme.`);
-        });
+        if (dom.importLink) {
+          dom.importLink.setAttribute("href", primaryScheme);
+          dom.importLink.addEventListener("click", () => {
+            dom.statusBox.textContent = tr().openingV2Box;
+            addLog(`Launched V2Box import: ${primaryScheme}`);
+            copyTextToClipboard(cleanSubUrl).catch(() => {});
+          });
+        }
+
+        if (dom.importAltLink) {
+          dom.importAltLink.setAttribute("href", altScheme);
+          dom.importAltLink.addEventListener("click", () => {
+            dom.statusBox.textContent = tr().openingV2Box;
+            addLog(`Launched V2Box alt import: ${altScheme}`);
+            copyTextToClipboard(cleanSubUrl).catch(() => {});
+          });
+        }
+
+        const iosBtn = document.getElementById("iosDownloadLink");
+        const androidBtn = document.getElementById("androidDownloadLink");
+        if (iosBtn) {
+          iosBtn.addEventListener("click", () => addLog("Opened App Store V2Box download link."));
+        }
+        if (androidBtn) {
+          androidBtn.addEventListener("click", () => addLog("Opened Google Play V2Box download link."));
+        }
       }
 
       // គ្រប់គ្រងការជ្រើសរើសតំបន់ 🇸🇬 SG, 🇻🇳 VN, 🇰🇭 KH និងវាស់ Ping
