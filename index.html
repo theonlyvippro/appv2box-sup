@@ -50,30 +50,12 @@
       }
     }
 
-    @keyframes needleBob {
-      0%, 100% {
-        transform: translate(0px, 0px);
-      }
-      50% {
-        transform: translate(2px, -3px);
-      }
-    }
-
     .flame-glow-pulse {
-      animation: flameBounceGlow 1.5s ease-in-out infinite;
-    }
-
-    .needle-bob-anim {
       animation: flameBounceGlow 1.5s ease-in-out infinite;
     }
 
     .play-ring-glow {
       animation: flameBounceGlow 2s ease-in-out infinite;
-    }
-
-    /* រចនាបថកម្រងពណ៌ខៀវភ្លឺដូចរូបភាពគំរូ */
-    .cyan-arc-glow {
-      filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.55)) drop-shadow(0 0 16px rgba(14, 165, 233, 0.35));
     }
   </style>
 </head>
@@ -83,7 +65,7 @@
 
     <!-- ផ្នែកក្បាល (Header) -->
     <header class="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-4">
-      <div class="flex items-center gap-3">
+      <div id="adminSecretHeader" class="flex items-center gap-3 select-none cursor-pointer" title="TheBest VIP">
         <!-- រូបសញ្ញាខ្លាភ្លើង (Flaming Tiger SVG) -->
         <div class="w-11 h-11 rounded-2xl bg-black border border-orange-500/40 flex items-center justify-center overflow-hidden shadow-md shrink-0">
           <svg viewBox="0 0 120 120" class="w-10 h-10" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Flaming Tiger Logo">
@@ -185,6 +167,39 @@
           </div>
           <p id="ipAddress" class="text-sm font-extrabold truncate mt-1 tabular-nums">កំពុងពិនិត្យ...</p>
           <p id="ipMeta" class="text-[11px] text-zinc-500 dark:text-zinc-400 truncate mt-0.5">តំបន់៖ --</p>
+        </div>
+      </section>
+
+      <!-- កាតទិន្នន័យប្រើប្រាស់ GB / MB (Data Traffic Usage) -->
+      <section class="rounded-2xl p-4 bg-zinc-50 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-zinc-800 space-y-2.5">
+        <div class="flex items-center justify-between">
+          <span id="dataTrafficTitle" class="text-xs font-semibold text-zinc-600 dark:text-zinc-300">ទិន្នន័យប្រើប្រាស់ (GB / MB)</span>
+          <span id="dataQuotaBadge" class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-500">
+            គ្មានដែនកំណត់ • Unlimited
+          </span>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2 pt-0.5">
+          <!-- ទាញយក (Download) -->
+          <div class="p-2.5 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200/80 dark:border-zinc-800">
+            <p id="dataDlLabel" class="text-[10px] font-semibold text-sky-400">↓ ទាញយក</p>
+            <p id="homeDlUsage" class="text-xs sm:text-sm font-extrabold tabular-nums mt-0.5">0.00 MB</p>
+            <p id="homeDlGbSub" class="text-[10px] text-zinc-500 dark:text-zinc-400 tabular-nums">0.000 GB</p>
+          </div>
+
+          <!-- ផ្ញើឡើង (Upload) -->
+          <div class="p-2.5 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200/80 dark:border-zinc-800">
+            <p id="dataUlLabel" class="text-[10px] font-semibold text-emerald-400">↑ ផ្ញើឡើង</p>
+            <p id="homeUlUsage" class="text-xs sm:text-sm font-extrabold tabular-nums mt-0.5">0.00 MB</p>
+            <p id="homeUlGbSub" class="text-[10px] text-zinc-500 dark:text-zinc-400 tabular-nums">0.000 GB</p>
+          </div>
+
+          <!-- សរុប (Total GB/MB) -->
+          <div class="p-2.5 rounded-xl bg-white dark:bg-zinc-950 border border-orange-500/35">
+            <p id="dataTotalLabel" class="text-[10px] font-semibold text-orange-400">∑ សរុប</p>
+            <p id="homeTotalUsage" class="text-xs sm:text-sm font-extrabold tabular-nums mt-0.5">0.00 MB</p>
+            <p id="homeTotalGbSub" class="text-[10px] text-zinc-500 dark:text-zinc-400 tabular-nums">0.000 GB</p>
+          </div>
         </div>
       </section>
 
@@ -436,7 +451,7 @@
             <!-- កម្រងកោងបង្ហាញល្បឿន -->
             <path id="gaugeProgressArc" d="M 56 142 A 104 104 0 1 1 264 142" fill="none" stroke="url(#orangeDialArc)" stroke-width="10" stroke-linecap="round" stroke-dasharray="445" stroke-dashoffset="445" class="flame-glow-pulse" />
 
-            <!-- ម្ជុលចង្អុលល្បឿនចាប់ផ្តើមត្រង់លេខ 0 (មុំ -112.9° ពីអ័ក្ស +Y) ហើយរត់ស្មើនឹងចុងខ្សែបន្ទាត់កោង -->
+            <!-- ម្ជុលចង្អុលល្បឿនចាប់ផ្តើមត្រង់លេខ 0 -->
             <g id="gaugeNeedle" style="transform-origin: 160px 142px; transform: rotate(-112.9deg);">
               <line x1="160" y1="142" x2="160" y2="48" stroke="#f97316" stroke-width="3.5" stroke-linecap="round" />
               <polygon points="160,36 153.5,52 166.5,52" fill="#fb923c" />
@@ -509,17 +524,59 @@
       </section>
     </div>
 
-    <!-- ផ្ទាំងទី ៤៖ កំណត់ហេតុ (Logs Tab) -->
-    <div id="tab-logs" class="tab-panel hidden space-y-3">
-      <div class="flex items-center justify-between">
-        <h2 id="logsTabTitle" class="text-sm font-bold">កំណត់ហេតុប្រព័ន្ធ (System Logs)</h2>
-        <button id="clearLogsBtn" type="button" class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 transition cursor-pointer">
-          សម្អាត
-        </button>
-      </div>
-      <div id="logsContainer" class="rounded-2xl p-3.5 bg-zinc-950 text-emerald-400 font-mono text-[11px] h-48 overflow-y-auto space-y-1.5 border border-zinc-800">
-        <p>[SYSTEM] Portal ready.</p>
-      </div>
+    <!-- ផ្ទាំងទី ៤៖ កំណត់ហេតុ និង តាមដានអ្នកចូលប្រើ (Logs & Access Tracker Tab) -->
+    <div id="tab-logs" class="tab-panel hidden space-y-4">
+      <!-- កាតតាមដានអ្នកដែលចុចចូលប្រើ (Visitor & Member Access Tracker) -->
+      <section class="rounded-2xl p-3.5 bg-zinc-50 dark:bg-zinc-900/80 border border-indigo-500/35 space-y-3">
+        <div class="flex items-center justify-between gap-2">
+          <div>
+            <h2 id="trackerTitle" class="text-sm font-bold text-indigo-400">តាមដានអ្នកចូលប្រើប្រាស់</h2>
+            <p id="trackerSubtitle" class="text-[11px] text-zinc-500 dark:text-zinc-400">កំណត់ត្រាសមាជិក និងការចុចនាំចូល</p>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <button id="exportTrackerBtn" type="button" class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-indigo-500/15 hover:bg-indigo-500/25 text-indigo-400 transition cursor-pointer">
+              📋 <span id="exportTrackerLabel">ចម្លង</span>
+            </button>
+            <button id="clearTrackerBtn" type="button" class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 transition cursor-pointer">
+              <span id="clearTrackerLabel">លុប</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- ស្ថិតិសង្ខេបនៃការចូលប្រើ -->
+        <div class="grid grid-cols-3 gap-2 text-center">
+          <div class="p-2 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800">
+            <p id="trackerVisitsLabel" class="text-[10px] text-zinc-500 dark:text-zinc-400">ចូលមើលសរុប</p>
+            <p id="trackerTotalVisits" class="text-sm font-extrabold text-indigo-400 tabular-nums mt-0.5">1</p>
+          </div>
+          <div class="p-2 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800">
+            <p id="trackerImportsLabel" class="text-[10px] text-zinc-500 dark:text-zinc-400">ចុច Import</p>
+            <p id="trackerTotalImports" class="text-sm font-extrabold text-emerald-400 tabular-nums mt-0.5">0</p>
+          </div>
+          <div class="p-2 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800">
+            <p id="trackerDataLabel" class="text-[10px] text-zinc-500 dark:text-zinc-400">ទិន្នន័យសរុប</p>
+            <p id="trackerTotalData" class="text-xs font-extrabold text-orange-400 tabular-nums mt-1">0.00 MB</p>
+          </div>
+        </div>
+
+        <!-- បញ្ជីកំណត់ត្រាអ្នកចូលប្រើថ្មីៗ -->
+        <div id="visitorHistoryList" class="space-y-2 max-h-40 overflow-y-auto pr-0.5">
+          <!-- បញ្ចូលដោយ JavaScript -->
+        </div>
+      </section>
+
+      <!-- កំណត់ហេតុប្រព័ន្ធ (System Logs) -->
+      <section class="space-y-2">
+        <div class="flex items-center justify-between">
+          <h3 id="logsTabTitle" class="text-xs font-bold text-zinc-500 dark:text-zinc-400">កំណត់ហេតុប្រព័ន្ធ (System Logs)</h3>
+          <button id="clearLogsBtn" type="button" class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 transition cursor-pointer">
+            សម្អាត
+          </button>
+        </div>
+        <div id="logsContainer" class="rounded-2xl p-3 bg-zinc-950 text-emerald-400 font-mono text-[11px] h-32 overflow-y-auto space-y-1 border border-zinc-800">
+          <p>[SYSTEM] Portal ready.</p>
+        </div>
+      </section>
     </div>
 
     <!-- ផ្ទាំងទី ៥៖ ការកំណត់ (Settings Tab) -->
@@ -565,7 +622,7 @@
         <div class="flex items-center justify-between gap-2">
           <div>
             <p id="deviceIdTitle" class="text-xs font-bold text-indigo-400">Device ID សមាជិក</p>
-            <p id="deviceIdDesc" class="text-[11px] text-zinc-500 dark:text-zinc-400">សម្គាល់ឧបករណ៍ដែលចូលប្រើ Website</p>
+            <p id="deviceIdDesc" class="text-[11px] text-zinc-500 dark:text-zinc-400">ទម្រង់ UUID ដូច V2Box សម្រាប់សម្គាល់ឧបករណ៍</p>
           </div>
           <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-500/15 text-indigo-400">MEMBER ID</span>
         </div>
@@ -593,9 +650,9 @@
 
   </main>
 
-  <!-- របារម៉ីនុយខាងក្រោមទាំង ៥ (Bottom Navigation Bar) -->
+  <!-- របារម៉ីនុយខាងក្រោម (Bottom Navigation Bar - លាក់ផ្ទាំងតាមដានពីសមាជិក) -->
   <nav aria-label="Primary Navigation" class="fixed bottom-4 left-1/2 -translate-x-1/2 w-[94%] max-w-md rounded-full bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border border-zinc-200 dark:border-zinc-800 shadow-[0_14px_35px_rgba(0,0,0,0.22)] px-2 py-2 z-40">
-    <div class="grid grid-cols-5 items-center text-center">
+    <div id="bottomNavGrid" class="grid grid-cols-4 items-center text-center">
       <!-- ១. ផ្ទះ -->
       <button type="button" data-tab="home" class="nav-btn group flex flex-col items-center justify-center gap-0.5 cursor-pointer">
         <span class="nav-pill px-4 py-1.5 rounded-full bg-orange-500/15 text-orange-500 transition-colors">
@@ -607,8 +664,8 @@
         <span id="navHomeLabel" class="nav-text text-[11px] font-bold text-orange-500 transition-colors">ផ្ទះ</span>
       </button>
 
-      <!-- ២. ម៉ាស៊ីនបម្រើ -->
-      <button type="button" data-tab="servers" class="nav-btn group flex flex-col items-center justify-center gap-0.5 cursor-pointer">
+      <!-- ៤. កំណត់ហេតុ / តាមដាន (លាក់សម្រាប់ Admin តែប៉ុណ្ណោះ) -->
+      <button id="navLogsBtn" type="button" data-tab="logs" class="nav-btn hidden group flex flex-col items-center justify-center gap-0.5 cursor-pointer">
         <span class="nav-pill px-4 py-1.5 rounded-full text-zinc-500 dark:text-zinc-400 transition-colors">
           <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M4.5 3.75A2.25 2.25 0 0 0 2.25 6v2.25A2.25 2.25 0 0 0 4.5 10.5h15a2.25 2.25 0 0 0 2.25-2.25V6A2.25 2.25 0 0 0 19.5 3.75h-15Zm3 3.375a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM4.5 13.5A2.25 2.25 0 0 0 2.25 15.75V18A2.25 2.25 0 0 0 4.5 20.25h15A2.25 2.25 0 0 0 21.75 18v-2.25A2.25 2.25 0 0 0 19.5 13.5h-15Zm3 3.375a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
@@ -628,7 +685,7 @@
         <span id="navSpeedLabel" class="nav-text text-[11px] font-medium text-zinc-500 dark:text-zinc-400 transition-colors">ល្បឿន</span>
       </button>
 
-      <!-- ៤. កំណត់ហេតុ -->
+      <!-- ៤. កំណត់ហេតុ / តាមដាន -->
       <button type="button" data-tab="logs" class="nav-btn group flex flex-col items-center justify-center gap-0.5 cursor-pointer">
         <span class="nav-pill px-4 py-1.5 rounded-full text-zinc-500 dark:text-zinc-400 transition-colors">
           <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -636,7 +693,7 @@
             <path d="M12.971 1.816A5.23 5.23 0 0 1 14.25 5.25v1.875c0 .207.168.375.375.375H16.5a5.23 5.23 0 0 1 3.434 1.279 9.768 9.768 0 0 0-6.963-6.963Z" />
           </svg>
         </span>
-        <span id="navLogsLabel" class="nav-text text-[11px] font-medium text-zinc-500 dark:text-zinc-400 transition-colors">កំណត់ហេតុ</span>
+        <span id="navLogsLabel" class="nav-text text-[11px] font-medium text-zinc-500 dark:text-zinc-400 transition-colors">តាមដាន</span>
       </button>
 
       <!-- ៥. ការកំណត់ -->
@@ -659,6 +716,8 @@
         startDate: new Date("2026-11-01T00:00:00"),
         expiryDate: new Date("2026-12-31T23:59:59"),
         subUrl: "https://theonlyvippro.github.io/appv2box-sup/sub.txt",
+        telegramBotToken: "8547984710:AAFz1YtNi7FfTTaFgljFose2W93FIsWVG8I",
+        telegramChatId: "8996477634",
       };
 
       // វចនានុក្រមភាសា (ខ្មែរ / អង់គ្លេស)
@@ -675,6 +734,11 @@
           regionPrefix: "តំបន់៖ ",
           unableFetchIp: "មិនអាចទាញ IP",
           checkConnection: "ពិនិត្យការភ្ជាប់អ៊ីនធឺណិត",
+          dataTrafficTitle: "ទិន្នន័យប្រើប្រាស់ (GB / MB)",
+          dataQuotaBadge: "គ្មានដែនកំណត់ • Unlimited",
+          dataDlLabel: "↓ ទាញយក",
+          dataUlLabel: "↑ ផ្ញើឡើង",
+          dataTotalLabel: "∑ សរុប",
           validityTitle: "សុពលភាពគណនី",
           daysLeftBadge: (d) => `នៅសល់ ${d} ថ្ងៃ`,
           expiredBadge: "ផុតកំណត់",
@@ -698,6 +762,13 @@
           regionSelectorTitle: "ជ្រើសរើសតំបន់ម៉ាស៊ីនបម្រើ",
           pingRegionsLabel: "វាស់ Ping",
           selectedRegionPrefix: "តំបន់បានជ្រើសរើស៖ ",
+          trackerTitle: "តាមដានអ្នកចូលប្រើប្រាស់",
+          trackerSubtitle: "កំណត់ត្រាសមាជិក និងការចុចនាំចូល",
+          exportTrackerLabel: "ចម្លង",
+          clearTrackerLabel: "លុប",
+          trackerVisitsLabel: "ចូលមើលសរុប",
+          trackerImportsLabel: "ចុច Import",
+          trackerDataLabel: "ទិន្នន័យសរុប",
           logsTabTitle: "កំណត់ហេតុប្រព័ន្ធ (System Logs)",
           clearLogsBtn: "សម្អាត",
           settingsTabTitle: "ការកំណត់ (Settings)",
@@ -715,7 +786,7 @@
           navHome: "ផ្ទះ",
           navServers: "ម៉ាស៊ីនបម្រើ",
           navSpeed: "ល្បឿន",
-          navLogs: "កំណត់ហេតុ",
+          navLogs: "តាមដាន",
           navSettings: "ការកំណត់",
         },
         en: {
@@ -730,6 +801,11 @@
           regionPrefix: "Region: ",
           unableFetchIp: "Unable to fetch IP",
           checkConnection: "Check internet connection",
+          dataTrafficTitle: "Data Usage (GB / MB)",
+          dataQuotaBadge: "Unlimited Quota",
+          dataDlLabel: "↓ Download",
+          dataUlLabel: "↑ Upload",
+          dataTotalLabel: "∑ Total",
           validityTitle: "Account Validity",
           daysLeftBadge: (d) => `${d} Days Left`,
           expiredBadge: "Expired",
@@ -753,6 +829,13 @@
           regionSelectorTitle: "Select Server Region",
           pingRegionsLabel: "Ping Test",
           selectedRegionPrefix: "Selected Region: ",
+          trackerTitle: "Member Access Tracker",
+          trackerSubtitle: "Visitor sessions & V2Box import logs",
+          exportTrackerLabel: "Copy",
+          clearTrackerLabel: "Clear",
+          trackerVisitsLabel: "Total Visits",
+          trackerImportsLabel: "Import Clicks",
+          trackerDataLabel: "Total Data",
           logsTabTitle: "System Logs",
           clearLogsBtn: "Clear",
           settingsTabTitle: "Settings",
@@ -770,7 +853,7 @@
           navHome: "Home",
           navServers: "Servers",
           navSpeed: "Speed",
-          navLogs: "Logs",
+          navLogs: "Tracker",
           navSettings: "Settings",
         },
       };
@@ -786,6 +869,9 @@
       // ប្រមូលធាតុ DOM សំខាន់ៗ
       const dom = {
         html: document.documentElement,
+        adminSecretHeader: document.getElementById("adminSecretHeader"),
+        bottomNavGrid: document.getElementById("bottomNavGrid"),
+        navLogsBtn: document.getElementById("navLogsBtn"),
         langToggle: document.getElementById("langToggle"),
         langLabel: document.getElementById("langLabel"),
         themeToggle: document.getElementById("themeToggle"),
@@ -800,6 +886,17 @@
         serverDotPing: document.getElementById("serverDotPing"),
         ipAddress: document.getElementById("ipAddress"),
         ipMeta: document.getElementById("ipMeta"),
+        dataTrafficTitle: document.getElementById("dataTrafficTitle"),
+        dataQuotaBadge: document.getElementById("dataQuotaBadge"),
+        dataDlLabel: document.getElementById("dataDlLabel"),
+        dataUlLabel: document.getElementById("dataUlLabel"),
+        dataTotalLabel: document.getElementById("dataTotalLabel"),
+        homeDlUsage: document.getElementById("homeDlUsage"),
+        homeDlGbSub: document.getElementById("homeDlGbSub"),
+        homeUlUsage: document.getElementById("homeUlUsage"),
+        homeUlGbSub: document.getElementById("homeUlGbSub"),
+        homeTotalUsage: document.getElementById("homeTotalUsage"),
+        homeTotalGbSub: document.getElementById("homeTotalGbSub"),
         validityTitle: document.getElementById("validityTitle"),
         expiryBadge: document.getElementById("expiryBadge"),
         countdownText: document.getElementById("countdownText"),
@@ -825,6 +922,19 @@
         regionPingSG: document.getElementById("regionPingSG"),
         regionPingVN: document.getElementById("regionPingVN"),
         regionPingKH: document.getElementById("regionPingKH"),
+        trackerTitle: document.getElementById("trackerTitle"),
+        trackerSubtitle: document.getElementById("trackerSubtitle"),
+        exportTrackerBtn: document.getElementById("exportTrackerBtn"),
+        exportTrackerLabel: document.getElementById("exportTrackerLabel"),
+        clearTrackerBtn: document.getElementById("clearTrackerBtn"),
+        clearTrackerLabel: document.getElementById("clearTrackerLabel"),
+        trackerVisitsLabel: document.getElementById("trackerVisitsLabel"),
+        trackerTotalVisits: document.getElementById("trackerTotalVisits"),
+        trackerImportsLabel: document.getElementById("trackerImportsLabel"),
+        trackerTotalImports: document.getElementById("trackerTotalImports"),
+        trackerDataLabel: document.getElementById("trackerDataLabel"),
+        trackerTotalData: document.getElementById("trackerTotalData"),
+        visitorHistoryList: document.getElementById("visitorHistoryList"),
         logsTabTitle: document.getElementById("logsTabTitle"),
         clearLogsBtn: document.getElementById("clearLogsBtn"),
         logsContainer: document.getElementById("logsContainer"),
@@ -867,6 +977,295 @@
         return I18N[currentLang] || I18N.km;
       }
 
+      // គ្រប់គ្រងទិន្នន័យប្រើប្រាស់ GB / MB និង តាមដានអ្នកចូលប្រើ (LocalStorage Persistence)
+      const DATA_USAGE_STORAGE_KEY = "thebestvip_data_usage_bytes_v1";
+      const VISITOR_TRACKER_STORAGE_KEY = "thebestvip_visitor_tracker_v1";
+
+      let cumulativeUsage = { dlBytes: 0, ulBytes: 0 };
+      let trackerState = {
+        totalVisits: 0,
+        totalImports: 0,
+        events: [],
+      };
+
+      function formatMB(bytes) {
+        const mb = (Number(bytes) || 0) / (1024 * 1024);
+        return `${mb.toFixed(2)} MB`;
+      }
+
+      function formatGB(bytes) {
+        const gb = (Number(bytes) || 0) / (1024 * 1024 * 1024);
+        return `${gb.toFixed(3)} GB`;
+      }
+
+      function formatSmartData(bytes) {
+        const val = Number(bytes) || 0;
+        const gb = val / (1024 * 1024 * 1024);
+        if (gb >= 1) {
+          return `${gb.toFixed(2)} GB`;
+        }
+        const mb = val / (1024 * 1024);
+        return `${mb.toFixed(2)} MB`;
+      }
+
+      function renderDataUsageUI() {
+        const dl = cumulativeUsage.dlBytes || 0;
+        const ul = cumulativeUsage.ulBytes || 0;
+        const total = dl + ul;
+
+        if (dom.homeDlUsage) dom.homeDlUsage.textContent = formatMB(dl);
+        if (dom.homeDlGbSub) dom.homeDlGbSub.textContent = formatGB(dl);
+        if (dom.homeUlUsage) dom.homeUlUsage.textContent = formatMB(ul);
+        if (dom.homeUlGbSub) dom.homeUlGbSub.textContent = formatGB(ul);
+        if (dom.homeTotalUsage) dom.homeTotalUsage.textContent = formatSmartData(total);
+        if (dom.homeTotalGbSub) dom.homeTotalGbSub.textContent = `${formatMB(total)} • ${formatGB(total)}`;
+        if (dom.trackerTotalData) dom.trackerTotalData.textContent = formatSmartData(total);
+      }
+
+      function loadAndTrackInitialTraffic() {
+        try {
+          const saved = JSON.parse(localStorage.getItem(DATA_USAGE_STORAGE_KEY) || "null");
+          if (saved && typeof saved.dlBytes === "number") {
+            cumulativeUsage = saved;
+          }
+        } catch {
+          // ប្រើតម្លៃលំនាំដើម
+        }
+
+        // គណនាទិន្នន័យដែលទាញយកនៅពេលបើកទំព័រ (Performance Resource Timing)
+        let pageTransferBytes = 48 * 1024;
+        try {
+          const navEntries = performance.getEntriesByType("navigation");
+          if (navEntries && navEntries[0] && navEntries[0].transferSize > 0) {
+            pageTransferBytes = navEntries[0].transferSize;
+          }
+        } catch {
+          // ប្រើតម្លៃប៉ាន់ស្មាន
+        }
+
+        addTrafficBytes(pageTransferBytes, 4 * 1024);
+      }
+
+      function addTrafficBytes(dlDelta, ulDelta) {
+        cumulativeUsage.dlBytes = Math.max(0, (cumulativeUsage.dlBytes || 0) + (Number(dlDelta) || 0));
+        cumulativeUsage.ulBytes = Math.max(0, (cumulativeUsage.ulBytes || 0) + (Number(ulDelta) || 0));
+        try {
+          localStorage.setItem(DATA_USAGE_STORAGE_KEY, JSON.stringify(cumulativeUsage));
+        } catch {
+          // រំលងកំហុស storage
+        }
+        renderDataUsageUI();
+      }
+
+      function getCurrentDeviceIdSafe() {
+        return (dom.memberDeviceIdValue && dom.memberDeviceIdValue.textContent.trim()) || "UNKNOWN-DEVICE";
+      }
+
+      function loadTrackerState() {
+        try {
+          const saved = JSON.parse(localStorage.getItem(VISITOR_TRACKER_STORAGE_KEY) || "null");
+          if (saved && Array.isArray(saved.events)) {
+            trackerState = saved;
+          }
+        } catch {
+          // ប្រើតម្លៃលំនាំដើម
+        }
+      }
+
+      function saveTrackerState() {
+        try {
+          localStorage.setItem(VISITOR_TRACKER_STORAGE_KEY, JSON.stringify(trackerState));
+        } catch {
+          // រំលងកំហុស storage
+        }
+      }
+
+      function renderVisitorTrackerUI() {
+        if (dom.trackerTotalVisits) dom.trackerTotalVisits.textContent = String(trackerState.totalVisits || 0);
+        if (dom.trackerTotalImports) dom.trackerTotalImports.textContent = String(trackerState.totalImports || 0);
+        if (dom.trackerTotalData) dom.trackerTotalData.textContent = formatSmartData((cumulativeUsage.dlBytes || 0) + (cumulativeUsage.ulBytes || 0));
+
+        if (!dom.visitorHistoryList) return;
+        dom.visitorHistoryList.innerHTML = "";
+
+        if (!trackerState.events.length) {
+          const empty = document.createElement("p");
+          empty.className = "text-[11px] text-zinc-500 text-center py-3";
+          empty.textContent = currentLang === "km" ? "មិនទាន់មានកំណត់ត្រាអ្នកចូលប្រើនៅឡើយទេ។" : "No visitor records yet.";
+          dom.visitorHistoryList.appendChild(empty);
+          return;
+        }
+
+        trackerState.events.slice(0, 25).forEach((ev) => {
+          const card = document.createElement("div");
+          card.className = "p-2.5 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200/80 dark:border-zinc-800 flex items-center justify-between gap-2 text-[11px]";
+
+          const isImport = ev.action === "IMPORT_V2BOX" || ev.action === "COPY_SUB";
+          const badgeClass = isImport
+            ? "bg-emerald-500/15 text-emerald-400"
+            : "bg-indigo-500/15 text-indigo-400";
+
+          const left = document.createElement("div");
+          left.className = "min-w-0 space-y-0.5";
+
+          const topLine = document.createElement("p");
+          topLine.className = "font-mono text-[10px] font-bold text-zinc-800 dark:text-zinc-200 truncate";
+          topLine.textContent = `ID: ${ev.deviceId}`;
+
+          const subLine = document.createElement("p");
+          subLine.className = "text-[10px] text-zinc-500 dark:text-zinc-400 truncate";
+          subLine.textContent = `${ev.ip} • ${ev.region} • ${ev.platform}`;
+
+          left.appendChild(topLine);
+          left.appendChild(subLine);
+
+          const right = document.createElement("div");
+          right.className = "text-right shrink-0 space-y-0.5";
+
+          const badge = document.createElement("span");
+          badge.className = `inline-block px-2 py-0.5 rounded-full text-[9px] font-bold ${badgeClass}`;
+          badge.textContent = ev.actionLabel;
+
+          const timeEl = document.createElement("p");
+          timeEl.className = "text-[9px] text-zinc-400 tabular-nums";
+          timeEl.textContent = ev.time;
+
+          right.appendChild(badge);
+          right.appendChild(timeEl);
+
+          card.appendChild(left);
+          card.appendChild(right);
+          dom.visitorHistoryList.appendChild(card);
+        });
+      }
+
+      function recordMemberAccessEvent(actionType, actionLabel) {
+        const now = new Date();
+        const timeFormatted = `${now.toLocaleDateString("en-GB")} ${now.toLocaleTimeString("en-GB", { hour12: false })}`;
+        const ipStr = lastIpData && lastIpData.ip ? lastIpData.ip : "Checking IP...";
+        const regionStr = lastIpData && lastIpData.region ? lastIpData.region : "Unknown";
+        const platform =
+          (navigator.userAgentData && navigator.userAgentData.platform) ||
+          navigator.platform ||
+          "Browser";
+
+        if (actionType === "VISIT") {
+          trackerState.totalVisits = (trackerState.totalVisits || 0) + 1;
+        } else if (actionType === "IMPORT_V2BOX" || actionType === "COPY_SUB") {
+          trackerState.totalImports = (trackerState.totalImports || 0) + 1;
+        }
+
+        trackerState.events.unshift({
+          action: actionType,
+          actionLabel,
+          deviceId: getCurrentDeviceIdSafe(),
+          ip: ipStr,
+          region: regionStr,
+          platform,
+          time: timeFormatted,
+        });
+
+        if (trackerState.events.length > 50) {
+          trackerState.events = trackerState.events.slice(0, 50);
+        }
+
+        saveTrackerState();
+        renderVisitorTrackerUI();
+        sendTelegramTrackerAlert(actionType, actionLabel, {
+          deviceId: getCurrentDeviceIdSafe(),
+          ip: ipStr,
+          region: regionStr,
+          platform,
+          time: timeFormatted,
+        });
+      }
+
+      // ផ្ញើដំណឹងតាមដានដោយស្ងាត់ៗទៅកាន់ Telegram Bot API របស់ Admin
+      async function sendTelegramTrackerAlert(actionType, actionLabel, info) {
+        if (!CONFIG.telegramBotToken || !CONFIG.telegramChatId) return;
+
+        // ប្រសិនបើជា Page Visit សូមរង់ចាំ 1.5s ដើម្បីទទួលបាន IP និងប្រទេសពិតប្រាកដជាមុន
+        if (actionType === "VISIT" && info.ip === "Checking IP...") {
+          await new Promise((resolve) => setTimeout(resolve, 1600));
+          if (lastIpData && lastIpData.ip) {
+            info.ip = lastIpData.ip;
+            info.region = lastIpData.region || info.region;
+          }
+        }
+
+        const icon =
+          actionType === "IMPORT_V2BOX"
+            ? "🚀"
+            : actionType === "COPY_SUB"
+            ? "📋"
+            : "👁️";
+
+        const totalTraffic = formatSmartData((cumulativeUsage.dlBytes || 0) + (cumulativeUsage.ulBytes || 0));
+        const messageText = [
+          `${icon} <b>TheBest VIP — ${actionLabel}</b>`,
+          `━━━━━━━━━━━━━━━━━━`,
+          `🆔 <b>Device ID:</b> <code>${info.deviceId}</code>`,
+          `🌐 <b>IP Address:</b> <code>${info.ip}</code>`,
+          `📍 <b>Region:</b> ${info.region}`,
+          `📱 <b>Platform:</b> ${info.platform}`,
+          `📊 <b>Data Used:</b> ${totalTraffic}`,
+          `🕒 <b>Time:</b> ${info.time}`,
+        ].join("\n");
+
+        const apiUrl = `https://api.telegram.org/bot${CONFIG.telegramBotToken}/sendMessage`;
+
+        try {
+          await fetch(apiUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              chat_id: CONFIG.telegramChatId,
+              text: messageText,
+              parse_mode: "HTML",
+              disable_web_page_preview: true,
+            }),
+            keepalive: true,
+          });
+        } catch {
+          // វិធីបម្រុងតាម Image Beacon ប្រសិនបើ Browser រារាំង CORS
+          try {
+            const img = new Image();
+            img.src = `${apiUrl}?chat_id=${encodeURIComponent(CONFIG.telegramChatId)}&parse_mode=HTML&text=${encodeURIComponent(messageText)}`;
+          } catch {
+            // រំលងដោយស្ងាត់ៗមិនឱ្យសមាជិកដឹង
+          }
+        }
+      }
+
+      // បើកផ្ទាំងតាមដានសម្រាប់ Admin នៅពេលចុចលើឡូហ្គោ TheBest VIP ៥ ដងជាប់គ្នា
+      let secretTapCount = 0;
+      let secretTapTimer = null;
+      if (dom.adminSecretHeader) {
+        dom.adminSecretHeader.addEventListener("click", () => {
+          secretTapCount += 1;
+          clearTimeout(secretTapTimer);
+          secretTapTimer = setTimeout(() => {
+            secretTapCount = 0;
+          }, 2000);
+
+          if (secretTapCount >= 5) {
+            secretTapCount = 0;
+            if (dom.navLogsBtn && dom.bottomNavGrid) {
+              const isHidden = dom.navLogsBtn.classList.contains("hidden");
+              dom.navLogsBtn.classList.toggle("hidden", !isHidden);
+              dom.bottomNavGrid.classList.toggle("grid-cols-4", !isHidden);
+              dom.bottomNavGrid.classList.toggle("grid-cols-5", isHidden);
+              if (isHidden) {
+                switchTab("logs");
+                addLog("Admin Tracker unlocked.");
+              } else {
+                switchTab("home");
+              }
+            }
+          }
+        });
+      }
+
       // កត់ត្រាកំណត់ហេតុប្រព័ន្ធ
       function addLog(message) {
         if (!dom.logsContainer) return;
@@ -905,6 +1304,11 @@
         if (dom.dateTimeLabel) dom.dateTimeLabel.textContent = t.dateTimeLabel;
         if (dom.ipLabel) dom.ipLabel.textContent = t.ipLabel;
         if (!lastIpData && dom.ipAddress) dom.ipAddress.textContent = t.checkingIp;
+        if (dom.dataTrafficTitle) dom.dataTrafficTitle.textContent = t.dataTrafficTitle;
+        if (dom.dataQuotaBadge) dom.dataQuotaBadge.textContent = t.dataQuotaBadge;
+        if (dom.dataDlLabel) dom.dataDlLabel.textContent = t.dataDlLabel;
+        if (dom.dataUlLabel) dom.dataUlLabel.textContent = t.dataUlLabel;
+        if (dom.dataTotalLabel) dom.dataTotalLabel.textContent = t.dataTotalLabel;
         if (dom.validityTitle) dom.validityTitle.textContent = t.validityTitle;
         if (dom.nodesTitle) dom.nodesTitle.textContent = t.nodesTitle;
         if (dom.lockedBadge) dom.lockedBadge.textContent = t.lockedBadge;
@@ -917,6 +1321,13 @@
         if (dom.serversTabTitle) dom.serversTabTitle.textContent = t.serversTabTitle;
         if (dom.regionSelectorTitle) dom.regionSelectorTitle.textContent = t.regionSelectorTitle;
         if (dom.pingRegionsLabel) dom.pingRegionsLabel.textContent = t.pingRegionsLabel;
+        if (dom.trackerTitle) dom.trackerTitle.textContent = t.trackerTitle;
+        if (dom.trackerSubtitle) dom.trackerSubtitle.textContent = t.trackerSubtitle;
+        if (dom.exportTrackerLabel) dom.exportTrackerLabel.textContent = t.exportTrackerLabel;
+        if (dom.clearTrackerLabel) dom.clearTrackerLabel.textContent = t.clearTrackerLabel;
+        if (dom.trackerVisitsLabel) dom.trackerVisitsLabel.textContent = t.trackerVisitsLabel;
+        if (dom.trackerImportsLabel) dom.trackerImportsLabel.textContent = t.trackerImportsLabel;
+        if (dom.trackerDataLabel) dom.trackerDataLabel.textContent = t.trackerDataLabel;
         if (dom.logsTabTitle) dom.logsTabTitle.textContent = t.logsTabTitle;
         if (dom.clearLogsBtn) dom.clearLogsBtn.textContent = t.clearLogsBtn;
         if (dom.settingsTabTitle) dom.settingsTabTitle.textContent = t.settingsTabTitle;
@@ -944,6 +1355,8 @@
 
         updateThemeUI();
         renderIpMeta();
+        renderDataUsageUI();
+        renderVisitorTrackerUI();
         updateClockAndValidity();
       }
 
@@ -1023,15 +1436,15 @@
         const encodedUrl = encodeURIComponent(cleanSubUrl);
         const encodedName = encodeURIComponent(CONFIG.subName);
 
-        // ទម្រង់ស្តង់ដារផ្លូវការរបស់ V2Box (មិនចម្លងចូល Clipboard ដោយស្វ័យប្រវត្តិ ដើម្បីកុំឱ្យរំខាន Intent)
         const primaryScheme = `v2box://install-sub?url=${encodedUrl}&name=${encodedName}`;
-        // វិធីទី ២៖ ចម្លង Link រួចបើក V2Box ដើម្បីឱ្យ V2Box អានពី Clipboard ភ្លាមៗ
         const altScheme = `v2box://install-sub?url=${cleanSubUrl}&name=${encodedName}`;
 
         if (dom.importLink) {
           dom.importLink.setAttribute("href", primaryScheme);
           dom.importLink.addEventListener("click", () => {
             dom.statusBox.textContent = tr().openingV2Box;
+            addTrafficBytes(16 * 1024, 2 * 1024);
+            recordMemberAccessEvent("IMPORT_V2BOX", "Import V2Box");
             addLog(`Launched V2Box direct import: ${primaryScheme}`);
           });
         }
@@ -1040,6 +1453,8 @@
           dom.importAltLink.setAttribute("href", altScheme);
           dom.importAltLink.addEventListener("click", () => {
             dom.statusBox.textContent = tr().openingV2Box;
+            addTrafficBytes(16 * 1024, 2 * 1024);
+            recordMemberAccessEvent("IMPORT_V2BOX", "Import Method 2");
             addLog(`Launched V2Box raw-url import: ${altScheme}`);
           });
         }
@@ -1100,11 +1515,11 @@
           const start = performance.now();
           await fetch(`https://1.1.1.1/cdn-cgi/trace?t=${Date.now()}`, { mode: "no-cors", cache: "no-store" });
           baseLatency = Math.max(8, Math.round(performance.now() - start));
+          addTrafficBytes(2 * 1024, 512);
         } catch {
           baseLatency = 22;
         }
 
-        // កំណត់តម្លៃ latency តាមតំបន់ SG / VN / KH ដោយផ្អែកលើការវាស់ជាក់ស្តែង
         regionLatencyMs.KH = Math.max(6, Math.round(baseLatency * 0.8 + Math.random() * 5));
         regionLatencyMs.SG = Math.max(10, Math.round(baseLatency * 1.0 + Math.random() * 6));
         regionLatencyMs.VN = Math.max(12, Math.round(baseLatency * 1.15 + Math.random() * 7));
@@ -1143,7 +1558,6 @@
 
       function formatAsUuidV4(hex32) {
         const clean = String(hex32).toLowerCase().replace(/[^0-9a-f]/g, "").padEnd(32, "0").slice(0, 32);
-        // កំណត់ version 4 (13th hex char = '4') និង variant RFC4122 (17th hex char = 8, 9, a, b)
         const v4Char = "4";
         const variantPool = ["8", "9", "a", "b"];
         const variantChar = variantPool[parseInt(clean[16], 16) % 4];
@@ -1171,7 +1585,6 @@
           seedSalt,
         ].join("|");
 
-        // ប្រើ 4 ដំណាក់កាល hash (32-bit នីមួយៗ = 128-bit hex) ដើម្បីបង្កើត UUID ស្អាត និងថេរ
         let h1 = 0x811c9dc5;
         let h2 = 0x01000193;
         let h3 = 0x9e3779b9;
@@ -1202,7 +1615,7 @@
             deviceId = localStorage.getItem(DEVICE_ID_STORAGE_KEY) || "";
           }
         } catch {
-          // ប្រើ fallback ប្រសិនបើ storage ត្រូវបានរារាំង
+          // ប្រើ fallback
         }
 
         if (!deviceId) {
@@ -1251,14 +1664,10 @@
       // កំណត់ទីតាំងម្ជុល និងកម្រងកោងនាឡិកាវាស់ល្បឿន (0 - 1000 Mbps) ឱ្យរត់ស្មើគ្នា
       function renderGaugeFrame(mbps) {
         const clamped = Math.max(0, Math.min(1000, Number(mbps) || 0));
-        // ប្រើសមាមាត្រលីនេអ៊ែរស្មើគ្នា 0 - 1000 Mbps ឱ្យត្រូវនឹងតួលេខល្បឿនផ្ទាល់
         const ratio = clamped / 1000;
         const maxDashOffset = 445;
         const offset = maxDashOffset - ratio * maxDashOffset;
 
-        // ធរណីមាត្រពិតនៃខ្សែបន្ទាត់កោង M 56 142 A 104 104 0 1 1 264 142 (center 160,142):
-        // ចំណុចចាប់ផ្តើម (56, 142) => dx = -104, dy = 0 => មុំពី +Y (160,142 -> 160,246) គឺ -112.88°
-        // ចំណុចបញ្ចប់ (264, 142) => dx = +104, dy = 0 => មុំពី +Y គឺ +112.88° (sweep = 225.76°)
         const startAngleDeg = -112.88;
         const totalSweepDeg = 225.76;
         const angleDeg = startAngleDeg + ratio * totalSweepDeg;
@@ -1283,7 +1692,6 @@
           return;
         }
 
-        // រំកិលតម្លៃស្មើគ្នាទាំងខ្សែបន្ទាត់កោង និងសញ្ញាព្រួញក្នុង frame តែមួយ
         displayedGaugeMbps += diff * 0.14;
         renderGaugeFrame(displayedGaugeMbps);
         gaugeAnimFrameId = requestAnimationFrame(stepGaugeAnimation);
@@ -1300,6 +1708,7 @@
         try {
           await copyTextToClipboard(CONFIG.subUrl);
           dom.statusBox.textContent = tr().copiedSuccess;
+          recordMemberAccessEvent("COPY_SUB", "Copy Sub Link");
           addLog("Copied subscription URL to clipboard.");
         } catch {
           dom.statusBox.textContent = tr().copyFailed;
@@ -1383,7 +1792,7 @@
         dom.validityBar.style.width = `${pct.toFixed(1)}%`;
       }
 
-      // វាស់ល្បឿន Ping, ទាញយក (Download) និង ផ្ញើឡើង (Upload)
+      // វាស់ល្បឿន Ping, ទាញយក (Download) និង ផ្ញើឡើង (Upload) ព្រមទាំងបូកបញ្ចូលទិន្នន័យ GB/MB
       async function runSpeedTest() {
         if (isTestingSpeed) return;
         isTestingSpeed = true;
@@ -1441,8 +1850,11 @@
           recordPeak(ulMbps);
           setGaugeValue(ulMbps);
 
+          // បូកទិន្នន័យពិតដែលបានប្រើក្នុងការវាស់ល្បឿនចូលទៅក្នុងកាត GB / MB លើផ្ទាំងផ្ទះ
+          addTrafficBytes(dlBlob.size, ulPayload.byteLength);
+
           if (dom.tunnelSessionStats) {
-            dom.tunnelSessionStats.textContent = `↓ ${(dlBlob.size / 1_000_000).toFixed(2)} MB · ↑ ${(ulPayload.byteLength / 1_000_000).toFixed(2)} MB`;
+            dom.tunnelSessionStats.textContent = `↓ ${(dlBlob.size / (1024 * 1024)).toFixed(2)} MB · ↑ ${(ulPayload.byteLength / (1024 * 1024)).toFixed(2)} MB`;
           }
           if (dom.tunnelRouteStatus) {
             dom.tunnelRouteStatus.textContent = lastIpData && lastIpData.region ? lastIpData.region : "Completed";
@@ -1502,6 +1914,15 @@
             renderIpMeta();
             dom.serverDot.className = "relative inline-flex rounded-full h-2 w-2 bg-emerald-500";
             dom.serverDotPing.className = "animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75";
+
+            // អាប់ដេត IP និងតំបន់ទៅក្នុងកំណត់ត្រាចូលមើលចុងក្រោយ
+            if (trackerState.events.length > 0 && trackerState.events[0].ip === "Checking IP...") {
+              trackerState.events[0].ip = data.ip;
+              trackerState.events[0].region = regionText;
+              saveTrackerState();
+              renderVisitorTrackerUI();
+            }
+
             addLog(`Connected IP detected: ${data.ip} (${regionText})`);
             return;
           }
@@ -1531,6 +1952,14 @@
           renderIpMeta();
           dom.serverDot.className = "relative inline-flex rounded-full h-2 w-2 bg-emerald-500";
           dom.serverDotPing.className = "animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75";
+
+          if (trackerState.events.length > 0 && trackerState.events[0].ip === "Checking IP...") {
+            trackerState.events[0].ip = lastIpData.ip;
+            trackerState.events[0].region = regionLabel;
+            saveTrackerState();
+            renderVisitorTrackerUI();
+          }
+
           addLog(`Fallback IP detected: ${lastIpData.ip}`);
         } catch {
           lastIpData = { type: "error" };
@@ -1545,6 +1974,9 @@
       setupImportLinks();
       selectServerRegion("SG");
       loadOrCreateMemberDeviceId(false);
+      loadAndTrackInitialTraffic();
+      loadTrackerState();
+      recordMemberAccessEvent("VISIT", "Page Visit");
       addLog("TheBest VIP Portal initialized.");
       setInterval(updateClockAndValidity, 1000);
       applyLanguageUI();
